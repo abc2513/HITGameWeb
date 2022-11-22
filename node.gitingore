@@ -1,7 +1,7 @@
 #忽略数据库模块
-db/
+/db/
 #忽略SSH证书
-zs/
+/zs/
 #忽略
 letsencrypt/
 node_modules/
