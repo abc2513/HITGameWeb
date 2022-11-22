@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8"/>
+		<title>注册页面</title>
+        <script type="text/javascript" src="../vue.js"></script>
+        <script type="text/javascript" src="../axios.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css"> 
+        <link rel="stylesheet" type="text/css" href="./reg.css"> 
+    </head>
+    <body>
+        <div id="root">
+            <div id="top_menu">
+                <top_menu></top_menu>
+                <top_menu_shadow></top_menu_shadow>
+            </div>
+            <div class="article">
+                <div id="reg">
+                    <form>
+                        <h1 style="padding-top: 30px">注册用户</h1>
+                        <label for="name">
+                            <div>
+                                用户名:&nbsp<span class='tip'>2~20的字符串,好名字让人们一眼记住你！</span><br>
+                                <input type="text" id="name" v-model="name">
+                                <span v-text="result_name" :class=result_kind_name></span>
+                            </div>
+                        </label>
+                    
+                        <label for="password">
+                            <div>
+                                密码:&nbsp<span class='tip'>2~20的字符串,合适的密码保护账号安全</span><br>
+                                <input type="password" id="password" v-model="password">
+                                <span v-text="result_password" :class=result_kind_password></span>
+                            </div>
+                        </label>
+                        <label for="repassword">
+                            <div>
+                                重复密码:&nbsp<span class='tip'>一定不要忘记密码</span><br>
+                                <input type="password" id="repassword" v-model="repassword">
+                                <span v-text="result_repassword" :class=result_kind_repassword></span>
+                            </div>
+                        </label>                   
+                        <label for="email">
+                            <div>邮箱:&nbsp<span class='tip'>使用中的邮箱，确保能够被联系上</span><br>
+                                <input type="text" id="email" v-model="email">
+                                <span v-text="result_email" :class=result_kind_email></span>
+                            </div>
+                        </label>
+                        <label for="agree">                           
+                            <div>
+                                <input type="checkbox" id="agree" v-model="agree">
+                                <span>阅读并接受《用户协议》<span class='tip'>（暂时还没有）</span></span>
+                            </div>
+                        </label>
+                    </form>
+                    <div><button style="margin-left: 40%;font-size: large; padding-left: 8px;padding-right: 8px;" v-on:click="send_reg_info">提交信息</button></div>
+                    <br><br>
+                </div>
+            </div>
+
+        </div>
+        <script  type="text/javascript" src="../topMenu.js"></script>
+        <script  type="text/javascript" src="./reg.js"></script>
+        <script  type="text/javascript" src="../reload_top_menu.js"></script>
+    </body>
+</html>

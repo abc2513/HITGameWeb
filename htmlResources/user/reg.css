@@ -1,0 +1,24 @@
+#reg{
+    width: 50%;
+    margin: auto;
+}
+#reg div{
+    margin: 20px;
+    padding: 10px;
+    background-color: rgb(198, 225, 246);
+    font-size: larger
+}
+input{
+    font-size: medium;
+}
+.pass{
+    color: rgb(69, 181, 92);
+    font-size: large;
+}
+.not_pass{
+    color:rgb(158, 7, 7);
+}
+.tip{
+    font-size: medium;
+    color: rgb(93, 93, 93);
+}

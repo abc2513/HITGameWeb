@@ -1,0 +1,37 @@
+.p_div{
+    width:80%;
+    margin-top: 10px;
+    padding: 7px;
+    background-color: rgb(247, 251, 255);
+}
+
+.kind_div{
+    background-color: rgb(233, 230, 148);
+    color: rgb(157, 120, 68);
+    font-size: larger;
+}
+.s_kind_div{
+    background-color: rgb(197, 224, 255);
+    color: rgb(50, 89, 112);
+    font-size: larger;
+}
+.text_div{
+}
+select{
+    color: rgb(87, 60, 14);
+    font-size: large;
+}
+option{
+    font-size: large;
+}
+textarea{
+    width: 99%;
+    font-size:large;
+}
+input{
+    width: 99%;
+    font-size: large;
+}
+button{
+    font-size: medium;
+}

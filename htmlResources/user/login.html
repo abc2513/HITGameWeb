@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8"/>
+		<title>登录页面</title>
+        <script type="text/javascript" src="../vue.js"></script>
+        <script type="text/javascript" src="../axios.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css"> 
+        <link rel="stylesheet" type="text/css" href="./reg.css"> 
+    </head>
+    <body>
+        <div id="root">
+            <div id="top_menu">
+                <top_menu></top_menu>
+                <top_menu_shadow></top_menu_shadow>
+            </div>
+            <div class="article">
+                <div id="reg">
+                    <form>
+                        <h1 style="padding-top: 30px">登录账号</h1>
+                        <div>
+                            登录方式：
+                            <label for="userID">                           
+                                <span>
+                                    <input type="radio" id="userID" value="userID" v-model="src_kind" name="src_kind" >
+                                    <span>账号<span class='tip'></span></span>
+                                </span>
+                            </label>
+                            <label for="email">                           
+                                <span>
+                                    <input type="radio" id="email" value="email" v-model="src_kind" name="src_kind">
+                                    <span>邮箱<span class='tip'></span></span>
+                                </span>
+                            </label>
+                            <label for="name">                           
+                                <span>
+                                    <input type="radio" id="name" value="name" v-model="src_kind" name="src_kind">
+                                    <span>用户名<span class='tip'></span></span>
+                                <span>
+                            </label>
+                        </div>
+                        <label for="name">
+                            <div>
+                                账号/邮箱/用户名:&nbsp<span class='tip'>推荐使用账号/邮箱</span><br>
+                                <input type="text" id="name" v-model="src_data">
+                            </div>
+                        </label>
+                        <label for="password">
+                            <div>
+                                密码:&nbsp<span class='tip'>>。<</span><br>
+                                <input type="password" id="password" v-model="password">
+                            </div>
+                        </label>
+                    </form>
+                    <div><button style="margin-left: 40%;font-size: large; padding-left: 8px;padding-right: 8px;" v-on:click="login">登录</button></div>
+                    <br><br>
+                </div>
+            </div>
+
+        </div>
+        <script  type="text/javascript" src="../topMenu.js"></script>
+        <script  type="text/javascript" src="./login.js"></script>
+        <script  type="text/javascript" src="../reload_top_menu.js"></script>
+    </body>
+</html>
