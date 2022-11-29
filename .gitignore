@@ -2,7 +2,6 @@
 /db
 /zs
 /letsencrypt
-/node_modules
 # Logs
 logs
 *.log
