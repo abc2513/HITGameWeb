@@ -33,7 +33,8 @@ exports.create_article={
     body:{
         title:joi.string().required().max(50).min(2),
         kind:joi.required(),
-        data:joi.required()
+        data:joi.required(),
+        article_status:joi.required(),
     }
 }
 exports.update_article={

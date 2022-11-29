@@ -12,7 +12,7 @@ var privateKey = fs.readFileSync(path.join(process.cwd(), 'zs/private.pem'), 'ut
 const HTTPS_OPTOIN = {
     key: privateKey,
     cert: privateCrt
-};
+}; 
 /////////////////////////////////////////////////////////////////////////
 //web服务器
 app.use(function(req,res,next){

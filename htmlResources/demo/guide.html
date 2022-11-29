@@ -5,6 +5,7 @@
 		<title>DEMO导航页面</title>
         <script type="text/javascript" src="../vue.js"></script>
         <link rel="stylesheet" type="text/css" href="../style.css"> 
+        <link rel="stylesheet" type="text/css" href="../edit_article.css"> 
     </head>
     <body>
         <div id="root">
@@ -14,12 +15,31 @@
             </div>
             <div class="article">
                 <h1>DEMO</h1>
-                <h1>开发中，敬请期待</h1>
-                <a href="./create_demo.html">创建demo</a>
+
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>DEMO发布</span>
+                    </div>
+                    <div class="text_div">
+                        <a href="./create_demo.html">创建demo</a>
+                        <a href="./...">修改demo(未完成)</a>
+                    </div>
+                </div>
+                
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>查看DEMO</span>
+                    </div>
+                    <div class="text_div">
+                        <div v-for="(p,index) of Data" :key="index" class="list_div">
+                            <a :href="'./demo.html?articleID='+Data[index].articleID">{{index+1}}:{{Data[index].title}}</a>
+                        </div>
+                    </div>
             </div>
 
         </div>
         <script  type="text/javascript" src="../topMenu.js"></script>
         <script  type="text/javascript" src="../reload_top_menu.js"></script>
+        <script  type="text/javascript" src="./guide.js"></script>
     </body>
 </html>

@@ -16,7 +16,7 @@
     font-size: larger;
 }
 .text_div{
-}
+} 
 select{
     color: rgb(87, 60, 14);
     font-size: large;
@@ -34,4 +34,19 @@ input{
 }
 button{
     font-size: medium;
+    margin-left: 5px;
+}
+.small_input{
+    width: 40px;
+    font-size: medium;
+}
+.list_div{
+    background-color: antiquewhite;
+    padding: 5px;
+    margin: 2px;
+    width: 98%;
+    font-size: larger;
+}
+.list_div a{
+    color: rgb(106, 68, 12);
 }

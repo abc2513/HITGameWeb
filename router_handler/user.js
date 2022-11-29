@@ -162,3 +162,29 @@ exports.login=(req,res)=>{
         })
     }
 }
+exports.get_article_list=(req,res)=>{
+    var sqlStr='select articleID,title,level from article where article_status=0 and kind=?'
+    db.query(sqlStr,req.query.kind,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到文章'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+        }})
+}
+exports.get_article=(req,res)=>{
+    var sqlStr='select * from article where article_status=0 and articleID=?'
+    db.query(sqlStr,req.query.articleID,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'文章不存在或暂未发表'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results[0])})
+        }})
+}

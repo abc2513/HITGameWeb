@@ -32,20 +32,41 @@ exports.updateUserInfo=(req,res)=>{
 
 
 }
-exports.create_article=(req,res)=>{
-    console.log("trying to create article!");
-    const mysql_str = 'insert into article set ?'
-    db.query(mysql_str,{title:req.body.title,kind:req.body.kind,status:req.body.status,data:req.body.data,authorID:req.user.userID},(err,results)=>{
-        if(err) {
-            return  res.send({status:1,message:err.message+',数据库出错，请联系网站开发者'})
+exports.create_article=(req,res)=>{ 
+    var sqlStr='select * from article where authorID=?'
+    db.query(sqlStr,req.user.userID,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
         }
-        else if(results.affectedRows!==1){
-            return res.send({status:1,message:'创建文章失败，请稍后再试或联系网站开发者'})
+        if(results.length>=2){
+            return res.send({status:1,message:' 用户文章上限暂时为2'})
         }
         else{
-            return res.send({status:0,message:'创建文章完成！'})
-        }
-    })
+            var sqlStr2='select * from article where title=?'
+            db.query(
+                sqlStr2,req.body.title,(err,results)=>{
+                if(err){
+                    return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+                }
+                if(results.length>=1){
+                    return res.send({status:1,message:' 存在一篇同名的文章！'})
+                }
+                else{    
+                    console.log("trying to create article!");
+                    const mysql_str = 'insert into article set ?'
+                    db.query(mysql_str,{title:req.body.title,kind:req.body.kind,article_status:req.body.article_status,data:req.body.data,authorID:req.user.userID},(err,results)=>{
+                        if(err) {
+                            return  res.send({status:1,message:err.message+',数据库出错，请联系网站开发者'})
+                        }
+                        else if(results.affectedRows!==1){
+                            return res.send({status:1,message:'创建文章失败，请稍后再试或联系网站开发者'})
+                        }
+                        else{
+                            return res.send({status:0,message:'创建文章完成！'})
+                        }
+                    })
+            }});
+        }})
 }
 exports.update_article=(req,res)=>{
     const sql=`update article set ? where articleID=?`

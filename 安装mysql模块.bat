@@ -1,2 +1,2 @@
-npm install mysql2
+npm install mysql
 PAUSE
