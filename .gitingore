@@ -1,14 +1,8 @@
 #忽略数据库模块
-/db/
-#忽略SSH证书
-/zs/
-#忽略
-letsencrypt/
-node_modules/
-
-
-
-
+/db
+/zs
+/letsencrypt
+/node_modules
 # Logs
 logs
 *.log
