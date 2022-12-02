@@ -1,47 +1,49 @@
 <!DOCTYPE html>
 <html>
-    <head>
-		<meta charset="UTF-8"/>
-		<title>DEMO导航页面</title>
-        <script type="text/javascript" src="../vue.js"></script>
-        <link rel="stylesheet" type="text/css" href="../style.css"> 
-        <link rel="stylesheet" type="text/css" href="../edit_article.css"> 
-    </head>
-    <body>
-        <div id="root">
-            <div id="top_menu">
-                <top_menu></top_menu>
-                <top_menu_shadow></top_menu_shadow>
-            </div>
-            <div class="article">
-                <h1>DEMO</h1>
 
-                <div class="p_div">
-                    <div class="s_kind_div">
-                        <span>DEMO发布(需要登录)</span> 
-                    </div>
-                    <div class="text_div">
-                        <a href="./create_demo.html" class="medium_a">创建demo</a>
-                        <a href="./my_demo_list.html" class="medium_a">我的demo</a>
+<head>
+    <meta charset="UTF-8" />
+    <title>DEMO导航页面</title>
+    <script type="text/javascript" src="../vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="../edit_article.css">
+</head>
+
+<body>
+    <div id="root">
+        <div id="top_menu">
+            <top_menu></top_menu>
+        </div>
+        <div class="article">
+            <h1>DEMO</h1>
+
+            <div class="p_div">
+                <div class="s_kind_div">
+                    <span>DEMO发布(需要登录)</span>
+                </div>
+                <div class="text_div">
+                    <a href="./create_demo.html" class="medium_a">创建demo</a>
+                    <a href="./my_demo_list.html" class="medium_a">我的demo</a>
+                </div>
+            </div>
+
+            <div class="p_div">
+                <div class="s_kind_div">
+                    <span>查看DEMO</span>
+                </div>
+                <div class="text_div">
+                    <div v-for="(p,index) of Data" :key="index" class="list_div">
+                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
+                        <span style="float: left;">评价{{p.level}}-{{p.name}}</span>
+                        <a :href="'./demo.html?articleID='+Data[index].articleID">{{Data[index].title}}</a>
                     </div>
                 </div>
-                
-                <div class="p_div">
-                    <div class="s_kind_div">
-                        <span>查看DEMO</span>
-                    </div>
-                    <div class="text_div">
-                        <div v-for="(p,index) of Data" :key="index" class="list_div">
-                            <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
-                            <span style="float: left;">评价{{p.level}}-{{p.name}}</span>
-                            <a :href="'./demo.html?articleID='+Data[index].articleID">{{Data[index].title}}</a>
-                        </div>
-                    </div>
             </div>
 
         </div>
-        <script  type="text/javascript" src="../topMenu.js"></script>
-        <script  type="text/javascript" src="../reload_top_menu.js"></script>
-        <script  type="text/javascript" src="./guide.js"></script>
-    </body>
+        <script type="text/javascript" src="../topMenu.js"></script>
+        <script type="text/javascript" src="../reload_top_menu.js"></script>
+        <script type="text/javascript" src="./guide.js"></script>
+</body>
+
 </html>
