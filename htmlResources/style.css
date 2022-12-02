@@ -1,18 +1,30 @@
-
-#root{ 
-    margin: 0%;
+body {
+    z-index: 1;
     background-image: url('https://s2.loli.net/2022/12/02/5TUVixEbfWOrLR7.jpg');
-    word-break: break-all;
-    background-repeat: no-repeat;
-    background-attachment: fixed; 
     background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    word-break: break-all;
+    overflow: auto;
 }
-.top_menu{
+
+#root {
+    width: 100%;
+}
+
+#top_menu {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
+    z-index: 100;
+}
+
+.top_menu {
+    height: 66px;
     background-color: rgb(201, 226, 250);
 }
+
 .top_menu ul {
     list-style-type: none;
     margin: 0;
@@ -20,14 +32,16 @@
     overflow: hidden;
     background-color: rgb(218, 236, 255);
 }
- 
+
 .top_menu ul .left {
     float: left;
 }
-.top_menu ul .right{
-    float : right;
+
+.top_menu ul .right {
+    float: right;
 }
-.top_menu li a{
+
+.top_menu li a {
     display: block;
     color: white;
     background-color: rgb(159, 210, 254);
@@ -39,69 +53,86 @@
     padding-top: 16px;
     border-left: 1px solid rgb(255, 255, 255);
 }
-.top_menu li span{
+
+.top_menu li span {
     display: block;
     color: white;
     background-color: rgb(177, 216, 252);
     text-align: center;
     text-decoration: none;
-    padding-left:15px;
+    padding-left: 15px;
     padding-right: 25px;
     height: 50px;
     font-size: x-large;
     padding-top: 16px;
 }
+
 .top_menu li a:hover {
     background-color: rgb(101, 155, 255);
 }
-.top_menu_shadow{
+
+.top_menu_shadow .top_menu {
     height: 50px;
     width: 100%;
 }
-.article{
-    background-color: rgba(244, 251, 255, 0.878);
-    width: 87%;
-    margin: auto;
+
+.article {
+    z-index: 1;
+    position: absolute;
+    left: 5%;
+    /* margin-top: 70px; */
+    top: 70px;
+    width: 90%;
+    height: auto;
+    min-height: 80%;
+    background-color: rgba(244, 251, 255, 0.74);
     padding: 8px;
 }
 
-.picture{
+.picture {
     width: 300px;
     float: right;
 }
-.long_picture_div{
+
+.long_picture_div {
     width: 240px;
-    display:inline-block;
+    display: inline-block;
     text-align: center;
     margin-top: 1%;
     margin-right: 0.5%;
     float: right;
 }
-.long_picture_div img{
+
+.long_picture_div img {
     width: 100%;
 }
-.wide_picture_div{
+
+.wide_picture_div {
     height: 320px;
-    display:inline-block;
+    display: inline-block;
     text-align: center;
     margin-top: 1%;
     margin-right: 0.5%;
     float: right;
 }
-.wide_picture_div img{
+
+.wide_picture_div img {
     height: 100%;
 }
-.small_picture_div{
+
+.small_picture_div {
     height: 150px;
-    display:inline-block;
+    display: inline-block;
     text-align: center;
     margin-right: 0.3%;
     float: right;
 }
-.small_picture_div img{
+
+.small_picture_div img {
     height: 100%;
 }
-.medium_a{
+
+.medium_a {
     width: 120px;
     height: 35px;
     font-size: large;
