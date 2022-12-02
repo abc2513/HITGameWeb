@@ -2,6 +2,7 @@
 /db
 /zs
 /letsencrypt
+*.zip
 # Logs
 logs
 *.log
