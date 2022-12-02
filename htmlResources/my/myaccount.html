@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8"/>
+		<title>我的账号</title>
+        <script type="text/javascript" src="../vue.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css"> 
+        <link rel="stylesheet" type="text/css" href="../edit_article.css"> 
+    </head>
+    <body>
+        <div id="root">  
+            <div id="top_menu">
+                <top_menu></top_menu>
+                <top_menu_shadow></top_menu_shadow>
+            </div>
+            <div class="article">
+                <h1>账号管理</h1>
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>账号信息</span>
+                    </div>
+                    <div class="text_div">
+                        用户ID：{{Data.userID}}<br>
+                        用户级别：{{Data.level}}-{{user_level_name}}<br>
+                        账号状态：{{Data.user_status}}<br>
+                        真实姓名：{{Data.realname}}<br>
+                        学号：{{Data.studentID}}<br>
+                        注册时间：{{Data.regtime}}（标准时区）<br>
+                    </div>
+                </div>
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>个人信息</span>
+                    </div>
+                    <div class="text_div">
+                        用户名：<input type="text" id="name" v-model="Data.name" style="width: 200px;">
+                        邮箱：<input type="email" id="email" v-model="Data.email" style="width: 200px;">
+                        <button v-on:click="update_user_info">提交修改</button>
+                    </div>
+                </div>
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>其他操作</span>
+                    </div>
+                    <div class="text_div">
+                        <button>修改密码开发中</button>
+                        <button v-on:click="de_login">退出登录</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <script  type="text/javascript" src="../topMenu.js"></script>
+        <script  type="text/javascript" src="../reload_top_menu.js"></script>
+        <script  type="text/javascript" src="./myaccount.js"></script>
+        <script  type="text/javascript" src="../check_login.js"></script>
+    </body>
+</html>

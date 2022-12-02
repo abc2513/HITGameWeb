@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8"/>
+		<title>我的DEMO预览</title>
+        <script type="text/javascript" src="../vue.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css"> 
+        <link rel="stylesheet" type="text/css" href="../edit_article.css"> 
+    </head>
+    <body>
+        <div id="root">
+            <div id="top_menu">
+                <top_menu></top_menu>
+                <top_menu_shadow></top_menu_shadow>
+            </div>
+            <div class="article">
+                <h1>{{Data.title}}</h1>
+                <div v-for="(p,index) of Data.data" :key="index">
+                    <p v-if="p.kind=='p'" style="line-height: 1.9;margin-left: 20px;margin-right: 20px;">{{p.text}}</p>
+                    <br v-if="p.kind=='br'">
+                    <h1 v-if="p.kind=='h1'">{{p.text}}</h1>
+                    <h2 v-if="p.kind=='h2'">{{p.text}}</h2>
+                    <h3 v-if="p.kind=='h3'">{{p.text}}</h3>
+                    <h4 v-if="p.kind=='h4'">{{p.text}}</h4>
+                    <h5 v-if="p.kind=='h5'">{{p.text}}</h5>
+                    <div v-if="p.kind=='url_s'"  class="small_picture_div" ><img :src="p.text"></div>
+                    <div v-if="p.kind=='url_l'"  class="long_picture_div" ><img :src="p.text"></div>
+                    <div v-if="p.kind=='url_w'"  class="wide_picture_div" ><img :src="p.text"></div>
+                    <iframe v-if="p.kind=='bv'" :src="'//player.bilibili.com/player.html?bvid='+p.text+'&page=1&as_wide=1&high_quality=1&danmaku=0&t=0'" allowfullscreen="allowfullscreen" height="500" width="800px" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
+                    <div v-if="p.kind=='bv'">视频原地址：<a :href="'//www.bilibili.com/video/'+p.text">https://www.bilibili.com/video/{{p.text}}</a></div>
+                    <div v-if="p.kind=='a'"><a :href="p.text">{{p.text}}</a></div>
+                </div>
+            </div>
+        </div>
+        <script  type="text/javascript" src="../topMenu.js"></script>
+        <script  type="text/javascript" src="../reload_top_menu.js"></script>
+        <script  type="text/javascript" src="../check_login.js"></script>
+        <script  type="text/javascript" src="./my_demo.js"></script>
+    </body>
+</html>

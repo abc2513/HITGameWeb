@@ -1,7 +1,7 @@
 
 #root{ 
     margin: 0%;
-    background-image: url('./resource/snow.jpg');
+    background-image: url('https://s2.loli.net/2022/12/02/5TUVixEbfWOrLR7.jpg');
     word-break: break-all;
     background-repeat: no-repeat;
     background-attachment: fixed; 
@@ -100,4 +100,15 @@
 }
 .small_picture_div img{
     height: 100%;
+}
+.medium_a{
+    width: 120px;
+    height: 35px;
+    font-size: large;
+    background-color: rgb(207, 219, 231);
+    color: rgb(16, 43, 99);
+    display: inline-block;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 5px;
 }

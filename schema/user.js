@@ -24,9 +24,8 @@ exports.login_schema={
 password=joi.string().min(6).max(20).empty(null)
 exports.update_user_info={
     body:{
-        name,
-        email,
-        password,
+        name:joi.string().min(2).max(20).required(),
+        email:joi.string().email().required(),
     }
 }
 exports.create_article={
@@ -39,7 +38,9 @@ exports.create_article={
 }
 exports.update_article={
     body:{
-        title:joi.string().empty([null, ""]).max(50).min(2),
-        article:joi.required()
+        title:joi.string().required().max(50).min(2),
+        //kind:joi.required(),
+        data:joi.required(),
+        article_status:joi.required(),
     }
 }

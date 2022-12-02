@@ -18,11 +18,11 @@
 
                 <div class="p_div">
                     <div class="s_kind_div">
-                        <span>DEMO发布</span>
+                        <span>DEMO发布(需要登录)</span> 
                     </div>
                     <div class="text_div">
-                        <a href="./create_demo.html">创建demo</a>
-                        <a href="./...">修改demo(未完成)</a>
+                        <a href="./create_demo.html" class="medium_a">创建demo</a>
+                        <a href="./my_demo_list.html" class="medium_a">我的demo</a>
                     </div>
                 </div>
                 
@@ -32,7 +32,9 @@
                     </div>
                     <div class="text_div">
                         <div v-for="(p,index) of Data" :key="index" class="list_div">
-                            <a :href="'./demo.html?articleID='+Data[index].articleID">{{index+1}}:{{Data[index].title}}</a>
+                            <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
+                            <span style="float: left;">评价{{p.level}}-{{p.name}}</span>
+                            <a :href="'./demo.html?articleID='+Data[index].articleID">{{Data[index].title}}</a>
                         </div>
                     </div>
             </div>

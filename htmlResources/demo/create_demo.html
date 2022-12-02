@@ -26,8 +26,9 @@
                 <div class="p_div" v-for="(p,index) of Data" :key="index">
                     <div class="kind_div">
                         元素#{{index}}<span style="margin-left:15px">类型:</span>
-                        <select v-model="Data[index].kind">
+                        <select v-model="p.kind">
                             <option value="p">正文段落</option>
+                            <option value="br">空白行</option>
                             <option value="h1">h1标题(大)</option>
                             <option value="h2">h2标题</option>
                             <option value="h3">h3标题</option>
@@ -40,8 +41,14 @@
                             <option value="a">链接</option>
                             <option value="p">(有需要可以反馈)</option>
                         </select>
+                        <button v-on:click="delect_this(index)" style="float: right;margin: 2px;">删除</button>
+                        <button v-on:click="move_down_this(index)" style="float: right;margin: 2px;">下移</button>
+                        <button v-on:click="move_up_this(index)" style="float: right;margin: 2px;">上移</button>
+                        <button v-on:click="new_this_br(index)" style="float: right;margin: 2px;">新增空白</button>
+                        <button v-on:click="new_this_h3(index)" style="float: right;margin: 2px;">新增h3</button>
+                        <button v-on:click="new_this(index)" style="float: right;margin: 2px;">新增段落</button>
                     </div>
-                    <div class="text_div">
+                    <div class="text_div"  v-show="p.kind!='br'">
                         <textarea v-model.lazy="Data[index].text"></textarea>
                     </div>
                 </div>
@@ -62,13 +69,13 @@
                     <div class="s_kind_div">
                         <span>提交</span>
                     </div>
-                    <div class="text_div">
+                    <div class="text_div"> 
                         你的文章将:
                         <select name="way" v-model="status">
                             <option value=0>直接发表</option>
                             <option value=1>存为草稿</option>
                         </select>
-                        <button v-on:click="post_article">提交</button>
+                        <button v-on:click="post_new_article">提交</button>
                     </div>
                 </div>
             </div>
@@ -76,5 +83,6 @@
         <script  type="text/javascript" src="./create_demo.js"></script>
         <script  type="text/javascript" src="../topMenu.js"></script>
         <script  type="text/javascript" src="../reload_top_menu.js"></script>
+        <script  type="text/javascript" src="../check_login.js"></script>
     </body>
 </html>

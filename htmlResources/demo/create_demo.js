@@ -18,6 +18,16 @@ var app2=new Vue({
             this.tool_log='添加元素#'+this.last_index+'成功';
             this.style_str=this.style_success
         },
+        add_h3(){
+            this.Data.push({kind:'h3',text:''});
+            this.tool_log='添加元素#'+this.last_index+'成功';
+            this.style_str=this.style_success
+        },
+        add_br(){
+            this.Data.push({kind:'br',text:''});
+            this.tool_log='添加元素#'+this.last_index+'成功';
+            this.style_str=this.style_success
+        },
         change_p(){
             var temp;
             if(this.change_a>=0&&this.change_a<this.Data.length&&this.change_b>=0&&this.change_b<this.Data.length){
@@ -40,12 +50,110 @@ var app2=new Vue({
         },
         delect_p(){
             if(this.delect_index<0||this.delect_index>=this.Data.length){
-                this.tool_log='存在索引值越界'
+                this.tool_log='存在索引值越界';
+                this.style_str=this.style_fail
             }else{
-                this.tool_log='删除元素#'+this.delect_index+'成功'
+                this.Data.splice(this.delect_index,1)
+                this.tool_log='删除元素#'+this.delect_index+'成功';
+                this.style_str=this.style_success
             }
         },
-        post_article(){
+        delect_this(index){
+            if(index<0||index>=this.Data.length){
+                alert(存在索引值越界);
+                this.tool_log='存在索引值越界';
+                this.style_str=this.style_fail
+            }else{
+                this.Data.splice(index,1)
+                this.tool_log='删除元素#'+this.delect_index+'成功';
+                this.style_str=this.style_success
+            }
+        },
+        move_up_this(index){
+            if(index<0||index>=this.Data.length){
+                alert('存在索引值越界');
+                this.tool_log='存在索引值越界';
+                this.style_str=this.style_fail
+            }
+            else if(index==0){
+                alert('该元素已位于顶部');
+                this.tool_log='该元素已位于顶部';
+                this.style_str=this.style_fail
+            }
+            else{
+                [this.Data[index-1],this.Data[index]]=[this.Data[index],this.Data[index-1]]
+                this.tool_log='上移元素#'+index+'成功';
+                this.style_str=this.style_success;
+                this.change_a++;this.change_a--;
+            }
+        },
+        move_down_this(index){
+            if(index<0||index>=this.Data.length){
+                alert('存在索引值越界');
+                this.tool_log='存在索引值越界';
+                this.style_str=this.style_fail
+            }
+            else if(index+1==this.Data.length){
+                alert('该元素已位于底部');
+                this.tool_log='该元素已位于顶部';
+                this.style_str=this.style_fail
+            }
+            else{
+                [this.Data[index+1],this.Data[index]]=[this.Data[index],this.Data[index+1]]
+                this.tool_log='下移元素#'+index+'成功';
+                this.style_str=this.style_success;
+                this.change_a++;this.change_a--;
+            }
+        },
+        new_this(index){
+            if(index<0||index>=this.Data.length){
+                alert('存在索引值越界');
+                this.tool_log='存在索引值越界';
+                this.style_str=this.style_fail
+            }
+            else{
+                this.add_p();
+                for(var i=this.Data.length-1;i>index+1;i--){
+                    [this.Data[i],this.Data[i-1]]=[this.Data[i-1],this.Data[i]]
+                }
+                this.tool_log='在元素#'+index+'后添加元素成功';
+                this.style_str=this.style_success;
+                this.change_a++;this.change_a--;
+            }
+        },
+        new_this_h3(index){
+            if(index<0||index>=this.Data.length){
+                alert('存在索引值越界');
+                this.tool_log='存在索引值越界';
+                this.style_str=this.style_fail
+            }
+            else{
+                this.add_h3();
+                for(var i=this.Data.length-1;i>index+1;i--){
+                    [this.Data[i],this.Data[i-1]]=[this.Data[i-1],this.Data[i]]
+                }
+                this.tool_log='在元素#'+index+'后添加元素成功';
+                this.style_str=this.style_success;
+                this.change_a++;this.change_a--;
+            }
+        },
+        new_this_br(index){
+            if(index<0||index>=this.Data.length){
+                alert('存在索引值越界');
+                this.tool_log='存在索引值越界';
+                this.style_str=this.style_fail
+            }
+            else{
+                this.add_br();
+                for(var i=this.Data.length-1;i>index+1;i--){
+                    [this.Data[i],this.Data[i-1]]=[this.Data[i-1],this.Data[i]]
+                }
+                this.tool_log='在元素#'+index+'后添加元素成功';
+                this.style_str=this.style_success;
+                this.change_a++;this.change_a--;
+            }
+        },
+        post_new_article(){ 
             if(this.Data.length==0){
                 alert('不能提交空文章')
             }
@@ -65,7 +173,8 @@ var app2=new Vue({
                             alert(response_json.message);
                         }
                         else{
-                            alert(response_json.message);
+                            alert(response_json.message+'即将跳转到预览');
+                            window.location.href="../demo/my_demo.html?articleID="+response_json.articleID
                         }
                     }
                 }
@@ -74,7 +183,7 @@ var app2=new Vue({
                 xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
                 xmlhttp.send("kind="+app2.kind+"&title="+app2.title+"&article_status="+app2.status+"&data="+JSON.stringify(app2.Data));
             }
-        }
+        },
     },
     computed:{
         log_text(){

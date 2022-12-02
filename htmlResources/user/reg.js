@@ -27,6 +27,10 @@ var app2=new Vue({
     methods: {
         send_reg_info(){
             if(app2.result_kind_name=='pass'&&app2.result_kind_password=='pass'&&app2.result_kind_repassword=='pass'&&app2.result_kind_email=='pass'){
+                if(this.agree!=true){
+                    alert("您尚未阅读并勾选《用户服务协议和隐私政策》！");
+                    return;
+                }
                 var xmlhttp;
                 if (window.XMLHttpRequest)
                   xmlhttp=new XMLHttpRequest();
@@ -43,7 +47,7 @@ var app2=new Vue({
                             //window.location.href="./login.html"
                         }
                         else{//注册成功！
-                            alert(response_json.message+"即将转跳到登录页面");
+                            alert(response_json.message+"。即将转跳到登录页面");
                             window.location.href="./login.html"
                         }
                     }

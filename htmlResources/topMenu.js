@@ -8,6 +8,7 @@ const top_menu = Vue.extend({
             </li>
             <li class="right" id="login_div"><a href="../user/login.html" id="login_a">登录</a></li>
             <li class="right" id="reg_div"><a href="../user/reg.html" id="reg_a">注册</a></li>
+            <li class="right" id="myaccount_div"></li>
             <li class="right" id="mycenter_div"></li>
             <li class="right" id="hello_div"></li>
         </ul>
@@ -15,8 +16,8 @@ const top_menu = Vue.extend({
     `,
     data(){
         return {
-            li_text:['首页','DEMO展示','团队招人',],
-            li_href:['../main/index.html','../demo/guide.html','../project/guide.html'],
+            li_text:['首页','DEMO展示','团队招人','SM.MS图床'],
+            li_href:['../main/index.html','../demo/guide.html','../project/guide.html','../main/smms.html'],
             is_login:false
         }
     },

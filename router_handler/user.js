@@ -87,9 +87,9 @@ exports.regUser=(req,res)=>{
                             isFailed=1;
                             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
                         }
-                        if(results.length>=5){
+                        if(results.length>=20){
                             isFailed=1;
-                            return res.send({status:1,message:'当天网站总注册数达到上限！请明天再尝试！测试期间每天仅5个注册数！'})
+                            return res.send({status:1,message:'当天网站总注册数达到上限！请明天再尝试！测试期间每天仅20个注册数！'})
                         } 
                         if(!isFailed){
                             //注册前检查完成
@@ -109,7 +109,26 @@ exports.regUser=(req,res)=>{
                                     //完成注册
                                     console.log('reguser success!!user\'s info:');
                                     console.log(user_info);
-                                    return res.send({status:1,message:"注册成功！"})
+                                    const req_mysql_str2 = 'select * from users where email=?'
+                                    db.query(req_mysql_str2,user_info.email,(err,results)=>{
+                                        if(err) {
+                                            isFailed=1;
+                                            //return  res.send({status:1,message:err.message+'数据库出错，请联系网站开发者'})
+                                        }
+                                        if(results.length!==1){
+                                            isFailed=1;
+                                            //return res.send({status:1,message:'注册失败，请稍后再试或联系网站开发者'})
+                                        }
+                                        if(!isFailed){
+                                            return res.send({status:0,message:"注册成功！您的userID为："+results[0].userID})
+                                        }
+                                        else{
+                                            return res.send({status:0,message:"注册成功！但是您的userID由于服务器内部问题获取失败，可稍后在我的账号查看。"})
+                                        }
+                                    })
+
+                                    
+
                                 }
 
                             })
@@ -122,7 +141,7 @@ exports.regUser=(req,res)=>{
         }
     })
 
-}
+}//注册用户
 exports.login=(req,res)=>{
     const user_info=req.body;
     var sql=''
@@ -161,9 +180,13 @@ exports.login=(req,res)=>{
             })
         })
     }
-}
+}//用户登录
 exports.get_article_list=(req,res)=>{
-    var sqlStr='select articleID,title,level from article where article_status=0 and kind=?'
+    var sqlStr=`select articleID,title,article.level,name,DATE_FORMAT(create_time, '%Y/%m/%d-%H:%i:%s') as create_time
+     from article join users on users.userID=article.authorID
+     where article_status=0 and kind=?
+     order by article.level DESC ,create_time DESC
+     `
     db.query(sqlStr,req.query.kind,(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
@@ -174,7 +197,7 @@ exports.get_article_list=(req,res)=>{
         else{
             return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
         }})
-}
+}//获取指定类型的公开文章列表
 exports.get_article=(req,res)=>{
     var sqlStr='select * from article where article_status=0 and articleID=?'
     db.query(sqlStr,req.query.articleID,(err,results)=>{
@@ -187,4 +210,4 @@ exports.get_article=(req,res)=>{
         else{
             return res.send({status:0,message:'查询成功',data:JSON.stringify(results[0])})
         }})
-}
+}//获取指定ID的公开文章列表
