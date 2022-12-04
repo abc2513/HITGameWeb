@@ -28,16 +28,22 @@ app.use("/html",express.static('./htmlResources'))
 const cors=require('cors');
 app.use(cors()) 
 app.use(express.urlencoded({ extended: false }))
-const userRouter=require('./router/user') 
-app.use('/api',userRouter)
-const user_infoRouter=require('./router/user_info')
-app.use('/my',user_infoRouter)
+const user_router=require('./router/user') 
+const user_info_router=require('./router/user_info')
+const op_router=require('./router/op')
+const op4_router=require('./router/op_4')
+app.use('/api',user_router)
+app.use('/my',user_info_router)
+app.use('/op',op_router)
+app.use('/op4',op4_router)
+
 app.use((err,req,res,next)=>{
     if(err instanceof joi.ValidationError) return res.cc(err)
     if(err.name==='UnauthorizedError') return res.cc('身份认证失败')
     res.cc(err)
     //这里没有next了,运行到这里就截断
 })
+app.use("/",express.static('./jump'))
 ///////////////////////////////////////////////////////////////////////////
 //运行HTTPS服务
 const httpsServer = https.createServer(HTTPS_OPTOIN, app);

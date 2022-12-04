@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>首页</title>
+    <script type="text/javascript" src="../vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="../edit_article.css">
+    <style>
+        input{
+            width: 180px;
+            margin-left: 2px;
+            margin-right: 5px;
+        }
+        select{
+            margin-left: 2px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <div id="top_menu">
+            <top_menu></top_menu>
+        </div>
+        <div class="article">
+            <h1>用户管理</h1>
+            <div class="p_div">
+                <div class="s_kind_div">
+                    <span>查询限制条件</span>
+                </div>
+                <div class="text_div" style="line-height: 2;">
+                    
+                    用户ID:<input type="text">
+                    用户名:input type="text">
+                    邮箱:<input type="text">
+                    姓名:<input type="text">
+                    学号:<input type="text">
+                    <br>
+                    类型:
+                    <select>
+                        <option value=-1>任意用户</option>
+                        <option value=1>1-普通用户</option>
+                        <option value=2>2-正式成员</option>
+                        <option value=3>3-管理员</option>
+                        <option value=4>4-组织者</option>
+                    </select>
+                    账号状态:
+                    <select>
+                        <option value=-1>任意状态</option>
+                        <option value=0>0-正常</option>
+                        <option value=1>1-禁言</option>
+                        <option value=2>2-冻结</option>
+                        <option value=3>3-封禁</option>
+                    </select>
+                    <button>模糊查询</button>
+                    <button v-on:click="">获取所有用户</button>
+                    <button>初始化条件</button>
+                </div>
+                <div class="s_kind_div">
+                    <span>查询结果</span>
+                </div>
+                <div class="text_div">
+                    <div v-for="(p,index) of Data" :key="index" class="list_div">
+
+                    </div>
+                </div> <div class="s_kind_div">
+                    <span>面板</span>
+                </div>
+                <div class="text_div">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../topMenu.js"></script>
+    <script type="text/javascript" src="../reload_top_menu.js"></script>
+    <script type="text/javascript" src="../check_login_3.js"></script>
+    <script type="text/javascript" src="./user_management.js"></script>
+</body>
+
+</html>
