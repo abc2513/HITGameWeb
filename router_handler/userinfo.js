@@ -32,8 +32,17 @@ exports.updateUserInfo=(req,res)=>{
 
 }//更新用户信息
 exports.create_article=(req,res)=>{ 
-    var sqlStr='select * from article where authorID=?'
-    db.query(sqlStr,req.user.userID,(err,results)=>{
+    if(req.user.level<3){
+        if(req.body.kind!=1&&req.body.kind!=2){
+            res.cc('您的用户权限只能创建kind=1/2的文章')
+        }
+    }else{
+        if(req.body.kind!=1&&req.body.kind!=2&&req.body.kind!=0){
+            res.cc('您的用户权限只能创建kind=1/2/0的文章')
+        }
+    }
+    var sqlStr='select * from article where authorID=? and kind=?'
+    db.query(sqlStr,[req.user.userID,req.kind],(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
         }
@@ -53,7 +62,7 @@ exports.create_article=(req,res)=>{
                 else{    
                     console.log("trying to create article!");
                     const mysql_str = 'insert into article set ?'
-                    db.query(mysql_str,{title:req.body.title,kind:req.body.kind,article_status:req.body.article_status,data:req.body.data,authorID:req.user.userID},(err,results)=>{
+                    db.query(mysql_str,{title:req.body.title,kind:req.body.kind,article_status:req.body.article_status,data:req.body.data,authorID:req.user.userID,participator:req.body.participator},(err,results)=>{
                         if(err) {
                             return  res.send({status:1,message:err.message+',数据库出错，请联系网站开发者'})
                         }

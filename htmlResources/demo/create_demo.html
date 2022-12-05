@@ -23,46 +23,20 @@
                         <input type="text" v-model="title">
                     </div>
                 </div>
-                <div class="p_div" v-for="(p,index) of Data" :key="index">
+                <div class="p_div">
                     <div class="kind_div">
-                        元素#{{index}}<span style="margin-left:15px">类型:</span>
-                        <select v-model="p.kind">
-                            <option value="p">正文段落</option>
-                            <option value="br">空白行</option>
-                            <option value="h1">h1标题(大)</option>
-                            <option value="h2">h2标题</option>
-                            <option value="h3">h3标题</option>
-                            <option value="h4">h4标题</option>
-                            <option value="h5">h5标题(小)</option>
-                            <option value="url_s">外链图片地址(小图片)</option>
-                            <option value="url_l">外链图片地址(长图片)</option>
-                            <option value="url_w">外链图片地址(宽图片)</option>
-                            <option value="bv">bilibil视频BV号</option>
-                            <option value="a">链接</option>
-                            <option value="p">(有需要可以反馈)</option>
-                        </select>
-                        <button v-on:click="delect_this(index)" style="float: right;margin: 2px;">删除</button>
-                        <button v-on:click="move_down_this(index)" style="float: right;margin: 2px;">下移</button>
-                        <button v-on:click="move_up_this(index)" style="float: right;margin: 2px;">上移</button>
-                        <button v-on:click="new_this_br(index)" style="float: right;margin: 2px;">新增空白</button>
-                        <button v-on:click="new_this_h3(index)" style="float: right;margin: 2px;">新增h3</button>
-                        <button v-on:click="new_this(index)" style="float: right;margin: 2px;">新增段落</button>
+                        <span>参与者名单</span>
                     </div>
-                    <div class="text_div"  v-show="p.kind!='br'">
-                        <textarea v-model.lazy="Data[index].text"></textarea>
+                    <div class="text_div">
+                        <input type="text" v-model="participator">
                     </div>
                 </div>
                 <div class="p_div">
-                    <div class="s_kind_div">
-                        <span>工具栏</span>
+                    <div class="kind_div">
+                        <span>简介</span>
                     </div>
                     <div class="text_div">
-                        在底部添加新的一元素<button v-on:click="add_p">新建</button>
-                        <br>将#<input type="number" class="small_input" v-model="change_a">和#<input type="number" class="small_input" v-model="change_b">交换位置
-                        <button v-on:click="change_p">交换</button>
-                        <br>删除#<input type="number" class="small_input" v-model="delect_index">元素 
-                        <button v-on:click="delect_p">删除</button>
-                        <br>结果:<span v-text="log_text" :style="style_str"></span>
+                        <textarea v-model="Data[1].text"></textarea>
                     </div>
                 </div>
                 <div class="p_div">
@@ -70,11 +44,7 @@
                         <span>提交</span>
                     </div>
                     <div class="text_div"> 
-                        你的文章将:
-                        <select name="way" v-model="status">
-                            <option value=0>直接发表</option>
-                            <option value=1>存为草稿</option>
-                        </select>
+                        你的文章将存为草稿，提交后可前往编辑页面完善并发表
                         <button v-on:click="post_new_article">提交</button>
                     </div>
                 </div>

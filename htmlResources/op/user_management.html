@@ -17,6 +17,9 @@
             margin-left: 2px;
             margin-right: 5px;
         }
+        .text_div{
+            margin-bottom: 2px;
+        }
     </style>
 </head>
 
@@ -29,48 +32,95 @@
             <h1>用户管理</h1>
             <div class="p_div">
                 <div class="s_kind_div">
-                    <span>查询限制条件</span>
+                    <span>查询</span>
                 </div>
                 <div class="text_div" style="line-height: 2;">
-                    
-                    用户ID:<input type="text">
-                    用户名:input type="text">
-                    邮箱:<input type="text">
-                    姓名:<input type="text">
-                    学号:<input type="text">
+                    用户ID:<input type="text" v-model="userID">
+                    用户名:<input type="text" v-model="user_name">
+                    邮箱:<input type="text" v-model="email">
+                    姓名:<input type="text" v-model="realname">
+                    学号:<input type="text" v-model="studentID">
                     <br>
                     类型:
-                    <select>
-                        <option value=-1>任意用户</option>
+                    <select v-model="level">
+                        <option value=''>任意用户</option>
                         <option value=1>1-普通用户</option>
                         <option value=2>2-正式成员</option>
                         <option value=3>3-管理员</option>
                         <option value=4>4-组织者</option>
                     </select>
                     账号状态:
-                    <select>
-                        <option value=-1>任意状态</option>
+                    <select v-model="user_status">
+                        <option value=''>任意状态</option>
                         <option value=0>0-正常</option>
                         <option value=1>1-禁言</option>
                         <option value=2>2-冻结</option>
                         <option value=3>3-封禁</option>
                     </select>
-                    <button>模糊查询</button>
-                    <button v-on:click="">获取所有用户</button>
-                    <button>初始化条件</button>
+                    <button v-on:click="get_user_list">模糊搜索</button>
+                    <button v-on:click="get_all_user_list">获取所有用户</button>
+                    <button v-on:click="reset_search">初始化查询</button>
                 </div>
                 <div class="s_kind_div">
                     <span>查询结果</span>
                 </div>
                 <div class="text_div">
-                    <div v-for="(p,index) of Data" :key="index" class="list_div">
-
+                    <div v-if="!user_list[0]">空列表</div>
+                    <div v-else>
+                        <div v-for="(p,index) of user_list" :key="index" class="list_div">
+                            {{p.level}};{{p.userID}};{{p.name}};{{p.email}};{{p.studentID}};{{p.realname}}
+                            <button v-on:click="select(p)" style="float: right;">选择</button>
+                        </div>
                     </div>
-                </div> <div class="s_kind_div">
-                    <span>面板</span>
                 </div>
-                <div class="text_div">
-
+                <div v-if="select_user.userID">
+                    <div class="s_kind_div" >
+                        <span>信息</span>
+                    </div>
+                    <div class="text_div">
+                        <div>用户ID：{{select_user.userID}}<br>
+                            用户名：{{select_user.name}}<br>
+                            等级：{{select_user.level}}<br>
+                            邮箱：{{select_user.email}}<br>
+                            学号：{{select_user.studentID}}<br>
+                            姓名：{{select_user.realname}}<br>
+                        </div>
+                    </div>
+                    <div v-if="loginer.level>select_user.level">
+                        <div class="s_kind_div" >
+                            <span>操作</span>
+                        </div>
+                        <div class="text_div">
+                            <div>
+                                重置密码：
+                                <button v-on:click="reset_password">操作</button>
+                            </div>
+                            <div v-if="select_user.level==1">
+                                升级为正式成员：
+                                姓名：<input type="text" v-model="upgrade_2_realname">
+                                学号：<input type="text" v-model="upgrade_2_studentID">
+                                重复学号：<input type="text" v-model="upgrade_2_restudentID">
+                                确认邮箱：<input type="email" v-model="upgrade_2_email">
+                                <button v-on:click="upgrade_2">操作</button>
+                            </div>
+                            <div v-if="select_user.level>1">
+                                维护实名信息：
+                                姓名：<input type="text" v-model="select_user.realname">
+                                学号：<input type="text" v-model="select_user.studentID">
+                                <button v-on:click="update_realinfo">保存</button>
+                            </div>
+                            <div>
+                                修改账号状态：
+                                <select v-model="select_user.user_status">
+                                    <option value=0>0-正常</option>
+                                    <option value=1>1-禁言</option>
+                                    <option value=2>2-冻结</option>
+                                    <option value=3>3-封禁</option>
+                                </select>
+                                <button v-on:click="change_user_status">保存</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

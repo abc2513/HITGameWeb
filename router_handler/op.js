@@ -6,7 +6,7 @@ const config=require('../config')
 exports.get_all_user_list=(req,res)=>{
     if(req.user.level<3)
         return res.send({status:1,message:'该请求需要3级权限'})
-    var sqlStr=`select userID,name,level,realname,studentID,DATE_FORMAT(regtime,'%Y/%m/%d-%H:%i:%s') as regtime
+    var sqlStr=`select userID,name,level,realname,studentID,DATE_FORMAT(regtime,'%Y/%m/%d-%H:%i:%s') as regtime,email,user_status
      from users
      order by level DESC,regtime DESC
      `
@@ -24,12 +24,12 @@ exports.get_all_user_list=(req,res)=>{
 exports.get_user_list=(req,res)=>{
     if(req.user.level<3)
         return res.send({status:1,message:'该请求需要3级权限'})
-    var sqlStr=`select userID,name,level,realname,studentID,DATE_FORMAT(regtime,'%Y/%m/%d-%H:%i:%s') as regtime
+    var sqlStr=`select userID,name,level,realname,studentID,DATE_FORMAT(regtime,'%Y/%m/%d-%H:%i:%s') as regtime,email,user_status
     from users
-    where level=?
+    where userID like ? and name like ? and email like ? and realname like ? and studentID like ? and level like ? and user_status like ?
     order by level DESC,regtime DESC
     `
-    db.query(sqlStr,req.query.level,(err,results)=>{
+    db.query(sqlStr,['%'+req.query.userID+'%','%'+req.query.name+'%','%'+req.query.email+'%','%'+req.query.realname+'%','%'+req.query.studentID+'%','%'+req.query.level+'%','%'+req.query.user_status+'%'],(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
         }
@@ -43,8 +43,8 @@ exports.get_user_list=(req,res)=>{
 exports.reset_password=(req,res)=>{
     if(req.user.level<3)
         return res.send({status:1,message:'该请求需要3级权限'})
-    var sqlStr=`select level from users where ?`
-    db.query(sqlStr,req.query,(err,results)=>{
+    var sqlStr=`select * from users where userID=?`
+    db.query(sqlStr,req.body.userID,(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
         }
@@ -52,7 +52,7 @@ exports.reset_password=(req,res)=>{
             return res.send({status:1,message:'查询不到用户'})
         }
         else{
-            if(result[0].level>=req.user.level)
+            if(results[0].level>=req.user.level)
                 return res.send({status:1,message:'你只能为权限等级低于你的账号重置密码'})
             else{
                 const sql=`update users set password='123456789' where userID=?`
@@ -66,8 +66,80 @@ exports.reset_password=(req,res)=>{
     })
 }//重置指定用户的密码
 exports.upgrade_2=(req,res)=>{
-    
+    if(req.user.level<3)
+        return res.send({status:1,message:'该请求需要3级权限'})
+    var sqlStr=`select * from users where userID=?`
+    db.query(sqlStr,req.body.userID,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到用户'})
+        }
+        else{
+            if(results[0].level!=1)
+                return res.send({status:1,message:'该操作仅适用于1级用户'})
+            else{
+                const sql=`update users set realname=?,studentID=?,level=2 where userID=?`
+                db.query(sql,[req.body.realname,req.body.studentID,req.body.userID],(err,results)=>{
+                    if(err) return res.cc(err+'请联系网站管理员');
+                    if(results.affectedRows!==1)return res.cc('操作失败！稍后再试或联系网站管理员')
+                    res.cc('成功将该用户升级为正式成员',0)
+                })
+            }
+        }
+    })
 }//将普通用户升级为正式社员，并填写realname和studentID
+exports.update_realinfo=(req,res)=>{
+    if(req.user.level<3)
+        return res.send({status:1,message:'该请求需要3级权限'})
+    var sqlStr=`select * from users where userID=?`
+    db.query(sqlStr,req.body.userID,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到用户'})
+        }
+        else{
+            if(results[0].level>=req.user.level)
+                return res.send({status:1,message:'你只能为权限等级低于你的账号订正实名信息'})
+            else{
+                const sql=`update users set realname=?,studentID=? where userID=?`
+                db.query(sql,[req.body.realname,req.body.studentID,req.body.userID],(err,results)=>{
+                    if(err) return res.cc(err+'请联系网站管理员');
+                    if(results.affectedRows!==1)return res.cc('订正实名信息失败！稍后再试或联系网站管理员')
+                    res.cc('订正实名信息成功！',0)
+                })
+            }
+        }
+    })
+}//修改正式社员的realname和studentID
+exports.change_user_status=(req,res)=>{
+    if(req.user.level<3)
+        return res.send({status:1,message:'该请求需要3级权限'})
+    var sqlStr=`select * from users where userID=?`
+    db.query(sqlStr,req.body.userID,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到用户'})
+        }
+        else{
+            if(results[0].level>=req.user.level)
+                return res.send({status:1,message:'你只能为权限等级低于你的账号修改状态！'})
+            else{
+                const sql=`update users set user_status=? where userID=?`
+                db.query(sql,[req.body.user_status,req.body.userID],(err,results)=>{
+                    if(err) return res.cc(err+'请联系网站管理员');
+                    if(results.affectedRows!==1)return res.cc('修改账号状态失败！稍后再试或联系网站管理员')
+                    res.cc('修改账号状态成功！',0)
+                })
+            }
+        }
+    })
+}//修改用户的账号状态
 exports.get_all_article_list=(req,res)=>{
 }//获取指定类型的文章列表(包括草稿)
 exports.change_article_status=(req,res)=>{
