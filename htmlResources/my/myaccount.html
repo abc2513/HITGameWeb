@@ -22,10 +22,10 @@
                     <div class="text_div">
                         用户ID：{{Data.userID}}<br>
                         用户级别：{{Data.level}}-{{user_level_name}}<br>
-                        账号状态：{{Data.user_status}}<br>
+                        账号状态：{{Data.user_status}}-{{user_status_name}}<br>
                         真实姓名：{{Data.realname}}<br>
                         学号：{{Data.studentID}}<br>
-                        注册时间：{{Data.regtime}}（标准时区）<br>
+                        注册时间：{{Data.regtime_f}}<br>
                     </div>
                 </div>
                 <div class="p_div">
@@ -33,6 +33,7 @@
                         <span>个人信息</span>
                     </div>
                     <div class="text_div">
+                        <!--这个隐藏的输入框用于占据浏览器的保存邮箱功能--><input type="email" hidden="hidden">
                         用户名：<input type="text" id="name" v-model="Data.name" style="width: 200px;">
                         邮箱：<input type="email" id="email" v-model="Data.email" style="width: 200px;">
                         <button v-on:click="update_user_info">提交修改</button>
@@ -40,10 +41,21 @@
                 </div>
                 <div class="p_div">
                     <div class="s_kind_div">
+                        <span>修改密码</span>
+                    </div>
+                    <div class="text_div">
+                        <!--这个隐藏的输入框用于占据浏览器的保存密码功能--><input type="password" hidden="hidden">
+                        旧密码：<input type="password" v-model="old_password" style="width: 200px;">
+                        新密码：<input type="password" v-model="new_password" style="width: 200px;">
+                        重复密码：<input type="password" v-model="repassword" style="width: 200px;">
+                        <button v-on:click="update_password">提交修改</button>
+                    </div>
+                </div>
+                <div class="p_div">
+                    <div class="s_kind_div">
                         <span>其他操作</span>
                     </div>
                     <div class="text_div">
-                        <button>修改密码开发中</button>
                         <button v-on:click="de_login">退出登录</button>
                     </div>
                 </div>

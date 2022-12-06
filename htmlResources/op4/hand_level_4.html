@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8"/>
+		<title>权限交接</title>
+        <script type="text/javascript" src="../vue.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css"> 
+        <link rel="stylesheet" type="text/css" href="../edit_article.css"> 
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <div id="root">
+            <div id="top_menu">
+                <top_menu></top_menu>
+                <top_menu_shadow></top_menu_shadow>
+            </div>
+            <div class="article">
+                <h1>权限交接</h1>
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>说明</span>
+                    </div>
+                    <div class="text_div">
+                        该页面用于用于level=4的用户将level=3的用户转变为level=4，同时自身变为level=3,通常只会在换届时使用
+                        <br><span style="background:rgb(242, 1rgb(141, 4, 4) 196);color:rgb(174, 13, 13)">警告！该操作需要非常谨慎！</span>
+                    </div>
+                </div>
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>确保你知道你要把level=4的权限交给谁</span>
+                    </div>
+                    <div class="text_div" style="line-height: 2;">
+                        用户ID：<input type="text" style="width: 190px;" v-model="userID"><br>
+                        用户名：<input type="text" style="width: 190px;" v-model="user_name"><br>
+                        用户邮箱：<input type="text" style="width: 190px;" v-model="email"><br>
+                        真实姓名：<input type="text" style="width: 190px;" v-model="realname"><br>
+                        学号：<input type="text" style="width: 190px;" v-model="studentID"><br>
+                    </div>
+                </div>
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>确保你的身份</span>
+                    </div>
+                    <div class="text_div" style="line-height: 2;">
+                        <!--这个隐藏的输入框用于截断浏览器自动保存密码-->
+                        <input type="password" hidden="hidden">
+                        你的学号：<input type="text"  style="width: 190px;" v-model="giver_studentID"><br>
+                        你的密码：<input type="password"  style="width: 190px;" v-model="giver_password">
+                    </div>
+                </div>
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>操作</span>
+                    </div>
+                    <div class="text_div">
+                        <input type="checkbox"  style="width: 20px;" v-model="is_check">我已知晓这一操作将使我永久失去level=4的权限，并且您输入的信息对应的用户将成为新的level=4唯一账号
+                        <button style="color: red;font-weight:600;background:rgb(251, 213, 213)" v-on:click="hand_level">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script  type="text/javascript" src="../topMenu.js"></script>
+        <script  type="text/javascript" src="../reload_top_menu.js"></script>
+        <script type="text/javascript" src="./hand_level_4.js"></script>
+        <script type="text/javascript" src="../check_login_4.js"></script>
+    </body>
+</html>

@@ -1,9 +1,12 @@
 const db=require('../db/index')
+const bcrypt=require('bcryptjs');
+const jwt =require('jsonwebtoken')
+const config=require('../config')
 var danger_char=RegExp(
     /[(\')(\")(\<)]+/
 );
 exports.getUserInfo=(req,res)=>{
-    const sql=`select * from users where userID=?`
+    const sql=`select *,DATE_FORMAT(regtime,'%Y/%m/%d-%H:%i:%s') as regtime_f from users where userID=?`
     db.query(sql,req.user.userID,(err,results)=>{
         if(err)return res.cc(err)
         if(results.length!==1)return res.cc('获取用户信息失败')
@@ -31,6 +34,21 @@ exports.updateUserInfo=(req,res)=>{
 
 
 }//更新用户信息
+exports.update_password=(req,res)=>{
+    const sql=`select * from users where userID=?`
+    db.query(sql,req.user.userID,(err,results)=>{
+        if(err)return res.cc(err)
+        if(results.length!==1)return res.cc('获取用户信息失败')
+        if(!bcrypt.compareSync(req.body.old_password,results[0].password))return res.cc('原密码错误！')
+        var new_password=bcrypt.hashSync(req.body.new_password,10)
+        const sql2=`update users set password=? where userID=?`
+        db.query(sql2,[new_password,req.user.userID],(err,results)=>{
+            if(err) return res.cc(err);
+            if(results.affectedRows!==1)return res.cc('修改密码失败！')
+            res.cc('修改密码成功',0)
+        })
+    })
+}//修改密码
 exports.create_article=(req,res)=>{ 
     if(req.user.level<3){
         if(req.body.kind!=1&&req.body.kind!=2){
@@ -42,7 +60,7 @@ exports.create_article=(req,res)=>{
         }
     }
     var sqlStr='select * from article where authorID=? and kind=?'
-    db.query(sqlStr,[req.user.userID,req.kind],(err,results)=>{
+    db.query(sqlStr,[req.user.userID,req.body.kind],(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
         }
@@ -50,9 +68,9 @@ exports.create_article=(req,res)=>{
             return res.send({status:1,message:' 用户文章上限暂时为2'})
         }
         else{
-            var sqlStr2='select * from article where title=?'
+            var sqlStr2='select * from article where title=? and kind=?'
             db.query(
-                sqlStr2,req.body.title,(err,results)=>{
+                sqlStr2,[req.body.title,req.body.kind],(err,results)=>{
                 if(err){
                     return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
                 }

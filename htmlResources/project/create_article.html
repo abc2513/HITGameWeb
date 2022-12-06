@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8"/>
+		<title>创建招募文章</title>
+        <script type="text/javascript" src="../vue.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css"> 
+        <link rel="stylesheet" type="text/css" href="../edit_article.css">  
+    </head>
+    <body>
+        <div id="root">
+            <div id="top_menu">
+                <top_menu></top_menu>
+                <top_menu_shadow></top_menu_shadow>
+            </div>
+            <div class="article">
+                <h1>创建一篇新的招募文章</h1>
+                <div class="p_div">
+                    <div class="kind_div">
+                        <span>主标题</span>
+                    </div>
+                    <div class="text_div">
+                        <input type="text" v-model="title">
+                    </div>
+                </div>
+                <div class="p_div">
+                    <div class="kind_div">
+                        <span>参与者名单</span>
+                    </div>
+                    <div class="text_div">
+                        <input type="text" v-model="participator">
+                    </div>
+                </div>
+                <div class="p_div">
+                    <div class="kind_div">
+                        <span>简介</span>
+                    </div>
+                    <div class="text_div">
+                        <textarea v-model="Data[1].text"></textarea>
+                    </div>
+                </div>
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>提交</span>
+                    </div>
+                    <div class="text_div"> 
+                        你的文章将存为草稿，提交后可前往编辑页面完善并发表
+                        <button v-on:click="post_new_article">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script  type="text/javascript" src="./create_article.js"></script>
+        <script  type="text/javascript" src="../topMenu.js"></script>
+        <script  type="text/javascript" src="../reload_top_menu.js"></script>
+        <script  type="text/javascript" src="../check_login.js"></script>
+    </body>
+</html>

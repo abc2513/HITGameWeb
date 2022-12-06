@@ -1,24 +1,49 @@
 <!DOCTYPE html>
 <html>
-    <head>
-		<meta charset="UTF-8"/>
-		<title>项目导航页面</title>
-        <script type="text/javascript" src="../vue.js"></script>
-        <link rel="stylesheet" type="text/css" href="../style.css"> 
-    </head>
-    <body>
-        <div id="root">
-            <div id="top_menu">
-                <top_menu></top_menu>
-                <top_menu_shadow></top_menu_shadow>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>招募导航页面</title>
+    <script type="text/javascript" src="../vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="../edit_article.css">
+</head>
+
+<body>
+    <div id="root">
+        <div id="top_menu">
+            <top_menu></top_menu>
+        </div>
+        <div class="article">
+            <h1>招募文章</h1>
+
+            <div class="p_div">
+                <div class="s_kind_div">
+                    <span>发布文章(需要登录)</span>
+                </div>
+                <div class="text_div">
+                    <a href="./create_article.html" class="medium_a">创建文章</a>
+                    <a href="./my_article_list.html" class="medium_a">我的文章</a>
+                </div>
             </div>
-            <div class="article">
-                <h1>项目导航页面</h1>
-                <h1>开发中，敬请期待</h1>
+
+            <div class="p_div">
+                <div class="s_kind_div">
+                    <span>查看招募</span>
+                </div> 
+                <div class="text_div">
+                    <div v-for="(p,index) of Data" :key="index" class="list_div">
+                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
+                        <span style="float: left;">评价{{p.level}}-{{p.name}}</span>
+                        <a :href="'./article.html?articleID='+Data[index].articleID">{{Data[index].title}}</a>
+                    </div>
+                </div>
             </div>
 
         </div>
-        <script  type="text/javascript" src="../topMenu.js"></script>
-        <script  type="text/javascript" src="../reload_top_menu.js"></script>
-    </body>
+        <script type="text/javascript" src="../topMenu.js"></script>
+        <script type="text/javascript" src="../reload_top_menu.js"></script>
+        <script type="text/javascript" src="./guide.js"></script>
+</body>
+
 </html>

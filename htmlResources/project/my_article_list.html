@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8"/>
+		<title>我的招募导航</title>
+        <script type="text/javascript" src="../vue.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css"> 
+        <link rel="stylesheet" type="text/css" href="../edit_article.css"> 
+    </head>
+    <body>
+        <div id="root">
+            <div id="top_menu">
+                <top_menu></top_menu>
+                <top_menu_shadow></top_menu_shadow>
+            </div>
+            <div class="article">
+                <h1>我的招募</h1>
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>文章发布</span>
+                    </div>
+                    <div class="text_div">
+                        <a href="./create_article.html" class="medium_a">创建文章</a>
+                    </div>
+                </div>
+                
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>查看我所有的招募文章</span>
+                    </div>
+                    <div class="text_div">
+                        <div v-for="(p,index) of Data" :key="index" class="list_div">
+                            <span v-if="p.article_status==0" style="color:rgb(91, 55, 11) ;font-weight: 900;">公开</span>
+                            <span v-if="p.article_status==1" style="color:rgb(15, 104, 10) ;font-weight: 900;">草稿</span>
+                            <a :href="'./article.html?articleID='+Data[index].articleID">{{index+1}}:{{p.title}}</a>
+                            <a :href="'./my_article.html?articleID='+Data[index].articleID" style="color:rgb(81, 48, 9) ;font-weight: 800;">预览</a>
+                            <a :href="'./edit_article.html?articleID='+Data[index].articleID" style="color:rgb(77, 47, 9) ;font-weight: 800;">编辑</a>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        <script  type="text/javascript" src="../topMenu.js"></script>
+        <script  type="text/javascript" src="../reload_top_menu.js"></script>
+        <script  type="text/javascript" src="../check_login.js"></script>
+        <script  type="text/javascript" src="./my_article_list.js"></script>
+    </body>
+</html>

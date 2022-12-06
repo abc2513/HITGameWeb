@@ -2,7 +2,9 @@ var app2=new Vue({
     el:'.article',
     data:{
         Data:{},
-
+        old_password:'',
+        new_password:'',
+        repassword:'',
     },
     mounted() {
         this.get_my_info()
@@ -23,7 +25,7 @@ var app2=new Vue({
             }
         },
         user_status_name(){
-            switch(this.Data.level){
+            switch(this.Data.user_status){
                 case 0:
                     return '正常';
                 case 1:
@@ -102,6 +104,36 @@ var app2=new Vue({
             xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
             xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
             xmlhttp.send('name='+app2.Data.name+'&email='+app2.Data.email);
-        }
+        },
+        update_password(){
+            if(this.old_password=='') return alert("请输入原密码！")
+            if(this.new_password=='') return alert("请输入新密码！")
+            if(this.repassword=='') return alert("请重复新密码")
+            if(this.new_password==this.old_password) return alert("新旧密码相同！")
+            if(this.repassword!=this.new_password) return alert("重复密码和旧密码不一致！")
+            var xmlhttp;
+            if (window.XMLHttpRequest)
+                xmlhttp=new XMLHttpRequest();
+            else
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            xmlhttp.onreadystatechange=function(){
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    console.log(xmlhttp.responseText);
+                    response_json=JSON.parse(xmlhttp.responseText);
+                    if(response_json.status){
+                        alert(response_json.message);
+                    }
+                    else{//成功
+                        alert(response_json.message+',请使用新密码重新登录！');
+                        window.location.href="../user/login.html"
+                    }
+                }
+            }
+            xmlhttp.open("POST","/my/update_password",true);
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
+            xmlhttp.send('old_password='+app2.old_password+'&new_password='+app2.new_password);
+        },
     },
 })
