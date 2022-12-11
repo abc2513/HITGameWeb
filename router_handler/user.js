@@ -199,7 +199,9 @@ exports.get_article_list=(req,res)=>{
         }})
 }//获取指定类型的公开文章列表
 exports.get_article=(req,res)=>{
-    var sqlStr='select * from article where article_status=0 and articleID=?'
+    var sqlStr=`select article.*,users.name
+     from article join users on article.authorID=users.userID
+     where article_status=0 and articleID=?`
     db.query(sqlStr,req.query.articleID,(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})

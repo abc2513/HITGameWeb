@@ -6,6 +6,8 @@
     <title>首页</title>
     <script type="text/javascript" src="../vue.js"></script>
     <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="../edit_article.css">
+
 </head>
 
 <body>
@@ -21,11 +23,27 @@
             <p>DEMO可使用文字、外链图片、B站视频、空白行等。示例：<a href="../demo/demo.html?articleID=1000005">示例DEMO</a>。图片全部自动向右靠，从右向左排列。其他内容自动向左靠，从上到下排列。</p>
             <p>另外，修改和保存DEMO要谨慎喔，没有撤回操作这种东西~~~离开编辑页面记得提交保存，放弃编辑不按保存离开或者刷新页面就行。想一边编辑一边看效果可以打开编辑和显示两个页面，保存编辑后刷新显示DEMO页面即可。</p>
             <p>同一浏览器的不同页面共享一个登录状态</p>
+            <div class="p_div">
+                <div class="s_kind_div">
+                    <span>查看公告</span>
+                    <span style="float: right;margin-right: 5px;font-size: large;">
+                        <a href="../announcement/guide.html">更多</a>
+                    </span>
+                </div> 
+                <div class="text_div">
+                    <div v-for="(p,index) of Data" :key="index" class="list_div">
+                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
+                        <span style="float: left;">{{p.name}}-</span>
+                        <a :href="'./article.html?articleID='+Data[index].articleID">{{Data[index].title}}</a>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
     <script type="text/javascript" src="../topMenu.js"></script>
     <script type="text/javascript" src="../reload_top_menu.js"></script>
+    <script type="text/javascript" src="./guide.js"></script>
 </body>
 
 </html>

@@ -110,7 +110,8 @@ exports.update_article=(req,res)=>{
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
         }
         if(results[0].authorID!=req.user.userID){
-            return res.send({status:1,message:'这篇文章并非您所有'})
+            if(results[0].kind!=0||req.user.level<3)
+                return res.send({status:1,message:'这篇文章并非您所有'})
         }
         else{
             const sql=`update article set article_status=?, data=?,title=? where articleID=?`
@@ -125,7 +126,9 @@ exports.update_article=(req,res)=>{
 
 }//更新文章
 exports.get_my_article=(req,res)=>{
-    var sqlStr=`select * from article where articleID=? `
+    var sqlStr=`select article.*,users.name
+    from article join users on article.authorID=users.userID
+    where articleID=?`
     db.query(sqlStr,req.query.articleID,(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
@@ -134,12 +137,12 @@ exports.get_my_article=(req,res)=>{
             return res.send({status:1,message:'文章不存在'})
         }
         else{
-            if(results[0].authorID==req.user.userID)
+            if(results[0].authorID==req.user.userID||(results[0].kind==0&&req.user.level>2))
                 return res.send({status:0,message:'查询成功',data:JSON.stringify(results[0])})
             else
                 return res.cc("该请求路径属于用于用户访问自己的文章，而该文章并不属于您")
         }})
-}//获取user指定ID的文章
+}//获取user指定ID的文章 
 exports.get_my_article_list=(req,res)=>{
     var sqlStr='select articleID,title,level,article_status from article where authorID=? and kind=?'
     db.query(sqlStr,[req.user.userID,req.query.kind],(err,results)=>{

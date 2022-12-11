@@ -3,6 +3,7 @@ var app2=new Vue({
     data:{
         title:'新建文章(请修改文章标题)',
         status:0,
+        participator:'',
         get_Data:[],
         Data:[],
         change_a:0,change_b:0,
@@ -214,6 +215,7 @@ var app2=new Vue({
                         app2.Data=JSON.parse(app2.get_Data.data);
                         app2.title=app2.get_Data.title;
                         app2.status=app2.get_Data.article_status;
+                        app2.participator=app2.get_Data.participator;
                     }
                 }
             }

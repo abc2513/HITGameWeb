@@ -23,6 +23,18 @@ exports.upgrade_3=(req,res)=>{
                     if(err) return res.cc(err+'请联系网站管理员');
                     if(results.affectedRows!==1)return res.cc('操作失败！稍后再试或联系网站管理员')
                     res.cc('成功将该用户升级为管理员',0)
+                    var router="upgrade_3";
+                    var sql_str=`insert into operate set operaterID=?,router=?,body=?`
+                    db.query(sql_str,[req.user.userID,router,JSON.stringify(req.body)],(err,results)=>{
+                        if(err) {
+                            console.log(err.message)
+                        }
+                        else if(results.affectedRows!==1){
+                            console.log('操作数据库失败')
+                        }
+                        else{
+                            //console.log('有人访问系统啦！')
+                        }})
                 })
             }
         }
@@ -47,7 +59,19 @@ db.query(sqlStr,req.body.userID,(err,results)=>{
             db.query(sql,req.body.userID,(err,results)=>{
                 if(err) return res.cc(err+'请联系网站管理员');
                 if(results.affectedRows!==1)return res.cc('操作失败！稍后再试或联系网站管理员')
-                res.cc('成功将该用户升级为管理员',0)
+                res.cc('成功将该用户取消管理员',0)
+                var router="downgrade_2";
+                var sql_str=`insert into operate set operaterID=?,router=?,body=?`
+                db.query(sql_str,[req.user.userID,router,JSON.stringify(req.body)],(err,results)=>{
+                    if(err) {
+                        console.log(err.message)
+                    }
+                    else if(results.affectedRows!==1){
+                        console.log('操作数据库失败')
+                    }
+                    else{
+                        //console.log('有人访问系统啦！')
+                    }})
             })
         }
     }
@@ -91,7 +115,19 @@ db.query(sqlStr,req.user.userID,(err,results)=>{
                     db.query(sql2,[req.user.userID],(err,results)=>{
                         if(err) return res.cc(err+'降级失败！请联系网站管理员');
                         if(results.affectedRows!==1)return res.cc('降级失败！请联系网站管理员')
-                        return res.cc('操作成功！感谢您一直以来的贡献！',0)
+                        res.cc('操作成功！感谢您一直以来的贡献！',0)
+                        var router="hand_level_4";
+                        var sql_str=`insert into operate set operaterID=?,router=?,body=?`
+                        db.query(sql_str,[req.user.userID,router,JSON.stringify(req.body)],(err,results)=>{
+                            if(err) {
+                                console.log(err.message)
+                            }
+                            else if(results.affectedRows!==1){
+                                console.log('操作数据库失败')
+                            }
+                            else{
+                                //console.log('有人访问系统啦！')
+                            }})
                     })
                 })
             }

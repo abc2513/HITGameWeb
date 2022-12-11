@@ -28,6 +28,14 @@
                         <input type="text" v-model="title">
                     </div>
                 </div>
+                <div class="p_div">
+                    <div class="kind_div">
+                        <span>参与者名单</span>
+                    </div>
+                    <div class="text_div">
+                        <input type="text" v-model="participator">
+                    </div>
+                </div>
                 <div class="p_div" v-for="(p,index) of Data" :key="index">
                     <div class="kind_div">
                         元素#{{index}}<span style="margin-left:15px">类型:</span>

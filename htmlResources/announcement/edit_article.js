@@ -2,17 +2,17 @@ var app2=new Vue({
     el:'.article',
     data:{
         title:'新建文章(请修改文章标题)',
-        status:0,
+        status:0, 
         participator:'',
         get_Data:[],
-        Data:[], 
+        Data:[],
         change_a:0,change_b:0,
         tool_log:'尚未执行任何操作',
         style_str:'color:rgb(86, 89, 255);background-color: rgb(230, 230, 230);',
         style_success:'color:rgb(35, 114, 35);background-color: rgb(208, 245, 220);',
         style_fail:'color:rgb(114, 35, 35);background-color: rgb(245, 208, 208);',
         delect_index:0,
-        kind:2,
+        kind:0,
     },
     mounted() {
         this.get_my_article()
