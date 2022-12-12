@@ -251,11 +251,13 @@ exports.get_n_best_article=(req,res)=>{
 }//获取n个评分最高的DEMO/项目
 exports.get_visit_time_today=(req,res)=>{
     var date=new Date;
-    var timestr=''+date.getFullYear+'-'+date.getMonth+'-'+date.getDate+' 00:00:00'
+    var month=date.getMonth()+1;
+    var timestr=''+date.getFullYear()+'-'+month+'-'+date.getDate()+' 00:00:00'
     var sqlStr=`select ip
     from visit_log
-    where router=? and time>=UNIX_TIMESTAMP(?)
+    where router=? and time>=?
     `
+    //console.log(timestr)
    db.query(sqlStr,[req.query.router,timestr],(err,results)=>{
        if(err){
            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
@@ -266,10 +268,11 @@ exports.get_visit_time_today=(req,res)=>{
 }//获取指定路径的网页今日访问量
 exports.get_visit_ip_today=(req,res)=>{
     var date=new Date;
-    var timestr=''+date.getFullYear+'-'+date.getMonth+'-'+date.getDate+' 00:00:00'
+    var month=date.getMonth()+1;
+    var timestr=''+date.getFullYear()+'-'+month+'-'+date.getDate()+' 00:00:00'
     var sqlStr=`select distinct ip
     from visit_log
-    where router=? and time>=UNIX_TIMESTAMP(?)
+    where router=? and time>=?
     `
    db.query(sqlStr,[req.query.router,timestr],(err,results)=>{
        if(err){

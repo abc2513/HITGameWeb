@@ -62,7 +62,7 @@ const httpsServer = https.createServer(HTTPS_OPTOIN, app);
 httpsServer.listen(SSL_PORT,'::');
 //httpsServer6.listen(SSL_PORT_6);
 ///////////////////兼容http
-net.createServer(function(socket){
+/*net.createServer(function(socket){
     socket.once('data', function(buf){
       console.log(buf[0]);
       // https数据流的第一位是十六进制“16”，转换成十进制就是22
@@ -82,6 +82,6 @@ net.createServer(function(socket){
     socket.on('error', function(err){
       console.log(err);
     })
-  }).listen(3000);
+  }).listen(3000);*/ 
   
   console.log(`服务器在端口号${SSL_PORT}上成功运行！`);
