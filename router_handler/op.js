@@ -55,8 +55,9 @@ exports.reset_password=(req,res)=>{
             if(results[0].level>=req.user.level)
                 return res.send({status:1,message:'你只能为权限等级低于你的账号重置密码'})
             else{
-                const sql=`update users set password='123456789' where userID=?`
-                db.query(sql,req.body.userID,(err,results)=>{
+                var new_password=bcrypt.hashSync('123456789',10)
+                const sql=`update users set password=? where userID=?`
+                db.query(sql,[new_password,req.body.userID],(err,results)=>{
                     if(err) return res.cc(err+'请联系网站管理员');
                     if(results.affectedRows!==1)return res.cc('重置密码失败！稍后再试或联系网站管理员')
                     res.cc('重置密码为123456789成功！请提醒该用户及时登录并修改为自己的密码！',0)
@@ -194,7 +195,7 @@ exports.change_article_status=(req,res)=>{
 }//修改指定文章状态（发布/草稿）
 exports.change_user_level=(req,res)=>{
 }//修改用户权限等级
-/*exports.get_all_annonucement_list=(req,res)=>{
+exports.get_all_annonucement_list=(req,res)=>{
     if(req.user.level<3)
     return res.send({status:1,message:'该请求需要3级权限'})
     var sqlStr='select articleID,title,level,article_status from article where kind=0'
@@ -224,4 +225,25 @@ exports.get_announcement=(req,res)=>{
             return res.send({status:0,message:'查询成功',data:JSON.stringify(results[0])})
         }})
 }//获取指定ID的公告
-*/ 
+
+exports.operate_list=(req,res)=>{
+
+}//查询管理日志
+exports.all_operate_list=(req,res)=>{
+    if(req.user.level<3)
+        return res.send({status:1,message:'该请求需要3级权限'})
+    var sqlStr=`select operateID,operatorID,router,body,DATE_FORMAT(time,'%Y/%m/%d-%H:%i:%s') as time
+     from operate
+     order by time DESC
+     `
+    db.query(sqlStr,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到操作日志'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+        }})
+}//获取所有管理日志

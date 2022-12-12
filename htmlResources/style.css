@@ -142,4 +142,10 @@ body {
     text-align: center;
     padding-top: 5px;
     margin-top: 5px;
+    text-decoration: none;
+}
+@media screen and (max-width:1200px) {
+    .top_menu li a {
+        width: 120px;
+    }
 }

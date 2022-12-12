@@ -10,4 +10,5 @@ router.post('/reset_password',user_handler.reset_password)
 router.post('/upgrade_2',user_handler.upgrade_2)
 router.post('/update_realinfo',user_handler.update_realinfo)
 router.post('/change_user_status',user_handler.change_user_status)
+router.get('/all_announcement_list',user_handler.get_all_annonucement_list)
 module.exports=router

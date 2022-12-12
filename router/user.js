@@ -7,4 +7,8 @@ router.post('/reguser',express_joi(reg_schema),user_handler.regUser)
 router.post('/login',express_joi(login_schema),user_handler.login)
 router.get('/article_list',user_handler.get_article_list)
 router.get('/article',user_handler.get_article)
+router.get('/n_best_article',user_handler.get_n_best_article)
+router.get('/n_newest_article',user_handler.get_n_newest_article)
+router.get('/visit_time_today',user_handler.get_visit_time_today)
+router.get('/visit_ip_today',user_handler.get_visit_ip_today)
 module.exports=router

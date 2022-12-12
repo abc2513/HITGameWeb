@@ -7,7 +7,37 @@
     <script type="text/javascript" src="../vue.js"></script>
     <link rel="stylesheet" type="text/css" href="../style.css">
     <link rel="stylesheet" type="text/css" href="../edit_article.css">
-
+    <link rel="shortcut icon" href="../resource/favicon64.ico">
+    <style>
+        .my_ul{
+            margin-left: 18.2%;
+            height: 50px;
+        }
+        .my_ul li{
+            float: left;
+            margin-right: 8%;
+            font-size: 40px;
+            color: white;
+            List-style-type: none;
+            Letter-spacing:20px;
+            font-weight: 500;
+        }
+        @media screen and (max-width:1200px){
+            .my_ul{
+                margin-left: 10%;
+                height: 50px;
+            }
+            .my_ul li{
+                float: left;
+                margin-right: 8%;
+                font-size: 40px;
+                color: white;
+                List-style-type: none;
+                Letter-spacing:10px;
+                font-weight: 500;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -16,25 +46,73 @@
             <top_menu></top_menu>
         </div>
         <div class="article">
-            <h1>首页</h1>
-            <p>建议使用电脑谷歌浏览器以获得最佳视觉体验。手机可能导致排版略有出入，电脑火狐浏览器可能导致配色异常（很多东西变成灰色）</p>
-            <p>测试期间每天限制20个注册名额(防止恶意注册)，每个用户限制两篇DEMO。测试期间非正式成员也能发布DEMO。不定期将水贴设置为“草稿”状态，可在我的DEMO-编辑DEMO页面修改后选择“发表”</p>
-            <p>目前已经实现：注册、登录、新建DEMO、修改DEMO、查看DEMO、账号管理</p>
-            <p>DEMO可使用文字、外链图片、B站视频、空白行等。示例：<a href="../demo/demo.html?articleID=1000005">示例DEMO</a>。图片全部自动向右靠，从右向左排列。其他内容自动向左靠，从上到下排列。</p>
-            <p>另外，修改和保存DEMO要谨慎喔，没有撤回操作这种东西~~~离开编辑页面记得提交保存，放弃编辑不按保存离开或者刷新页面就行。想一边编辑一边看效果可以打开编辑和显示两个页面，保存编辑后刷新显示DEMO页面即可。</p>
-            <p>同一浏览器的不同页面共享一个登录状态</p>
+            <div style="margin: 20px;padding: 10px;background-color: rgba(68, 151, 239, 0.809);width: 90%;padding-left: 5%;">
+                <h1 style="text-align: center;color: white;margin-bottom: 25px;font-size: 45px;">哈尔滨工业大学-游戏开发社团</h1>
+                <ul class="my_ul">
+                    <li>创新</li>
+                    <li>|</li>
+                    <li>创作</li>
+                    <li>|</li>
+                    <li>创享</li>
+                </ul>
+                <div style="font-size: x-large;text-align: center;color:white">今天已有{{today_visit_ip}}人{{today_visit_time}}次访问了网站首页</div>
+            </div>
             <div class="p_div">
                 <div class="s_kind_div">
-                    <span>查看公告</span>
+                    <span>公告</span>
                     <span style="float: right;margin-right: 5px;font-size: large;">
                         <a href="../announcement/guide.html">更多</a>
                     </span>
                 </div> 
                 <div class="text_div">
-                    <div v-for="(p,index) of Data" :key="index" class="list_div">
+                    <div v-for="(p,index) of announcement" :key="index" class="list_div">
+                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
+                        <a :href="'../announcement/article.html?articleID='+p.articleID">{{p.title}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="p_div">
+                <div class="s_kind_div">
+                    <span>优秀DEMO</span>
+                    <span style="float: right;margin-right: 5px;font-size: large;">
+                        <a href="../demo/guide.html">更多</a>
+                    </span>
+                </div> 
+                <div class="text_div">
+                    <div v-for="(p,index) of best_demo" :key="index" class="list_div">
+                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
+                        <span style="float: left;">{{p.level}}-{{p.name}}-</span>
+                        <a :href="'../demo/demo.html?articleID='+p.articleID">{{p.title}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="p_div">
+                <div class="s_kind_div">
+                    <span>最新DEMO</span>
+                    <span style="float: right;margin-right: 5px;font-size: large;">
+                        <a href="../demo/guide.html">更多</a>
+                    </span>
+                </div> 
+                <div class="text_div">
+                    <div v-for="(p,index) of newest_demo" :key="index" class="list_div">
                         <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
                         <span style="float: left;">{{p.name}}-</span>
-                        <a :href="'./article.html?articleID='+Data[index].articleID">{{Data[index].title}}</a>
+                        <a :href="'../demo/demo.html?articleID='+p.articleID">{{p.title}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="p_div">
+                <div class="s_kind_div">
+                    <span>最新项目</span>
+                    <span style="float: right;margin-right: 5px;font-size: large;">
+                        <a href="../project/guide.html">更多</a>
+                    </span>
+                </div> 
+                <div class="text_div">
+                    <div v-for="(p,index) of newest_project" :key="index" class="list_div">
+                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
+                        <span style="float: left;">{{p.name}}-</span>
+                        <a :href="'../project/article.html?articleID='+p.articleID">{{p.title}}</a>
                     </div>
                 </div>
             </div>
@@ -43,7 +121,7 @@
     </div>
     <script type="text/javascript" src="../topMenu.js"></script>
     <script type="text/javascript" src="../reload_top_menu.js"></script>
-    <script type="text/javascript" src="./guide.js"></script>
+    <script type="text/javascript" src="./index.js"></script>
 </body>
 
 </html>

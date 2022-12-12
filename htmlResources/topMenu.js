@@ -16,7 +16,7 @@ const top_menu = Vue.extend({
     `,
     data(){
         return {
-            li_text:['首页','DEMO展示','团队招人','SM.MS图床'],
+            li_text:['首页','DEMO展示','团队招人','SMMS图床'],
             li_href:['../main/index.html','../demo/guide.html','../project/guide.html','../main/smms.html'],
             is_login:false
         }

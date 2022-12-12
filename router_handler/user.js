@@ -202,7 +202,7 @@ exports.get_article=(req,res)=>{
     var sqlStr=`select article.*,users.name
      from article join users on article.authorID=users.userID
      where article_status=0 and articleID=?`
-    db.query(sqlStr,req.query.articleID,(err,results)=>{
+    db.query(sqlStr,[req.query.articleID],(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
         }
@@ -212,4 +212,70 @@ exports.get_article=(req,res)=>{
         else{
             return res.send({status:0,message:'查询成功',data:JSON.stringify(results[0])})
         }})
-}//获取指定ID的公开文章列表
+}//获取指定ID的公开文章
+exports.get_n_newest_article=(req,res)=>{
+    var sqlStr=`select articleID,title,article.level,name,DATE_FORMAT(create_time, '%Y/%m/%d-%H:%i:%s') as create_time
+     from article join users on users.userID=article.authorID
+     where article_status=0 and kind=?
+     order by create_time DESC
+     limit 0,?
+     `
+    db.query(sqlStr,[req.query.kind,Number(req.query.n)],(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到文章'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+        }})
+}//获取n个最新的DEMO/项目
+exports.get_n_best_article=(req,res)=>{
+    var sqlStr=`select articleID,title,article.level,name,DATE_FORMAT(create_time, '%Y/%m/%d-%H:%i:%s') as create_time
+     from article join users on users.userID=article.authorID
+     where article_status=0 and kind=?
+     order by article.level DESC ,create_time DESC
+     limit 0,?
+     `
+    db.query(sqlStr,[req.query.kind,Number(req.query.n)],(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到文章'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+        }})
+}//获取n个评分最高的DEMO/项目
+exports.get_visit_time_today=(req,res)=>{
+    var date=new Date;
+    var timestr=''+date.getFullYear+'-'+date.getMonth+'-'+date.getDate+' 00:00:00'
+    var sqlStr=`select ip
+    from visit_log
+    where router=? and time>=UNIX_TIMESTAMP(?)
+    `
+   db.query(sqlStr,[req.query.router,timestr],(err,results)=>{
+       if(err){
+           return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+       }
+       else{
+           return res.send({status:0,message:'查询成功',data:results.length})
+       }})
+}//获取指定路径的网页今日访问量
+exports.get_visit_ip_today=(req,res)=>{
+    var date=new Date;
+    var timestr=''+date.getFullYear+'-'+date.getMonth+'-'+date.getDate+' 00:00:00'
+    var sqlStr=`select distinct ip
+    from visit_log
+    where router=? and time>=UNIX_TIMESTAMP(?)
+    `
+   db.query(sqlStr,[req.query.router,timestr],(err,results)=>{
+       if(err){
+           return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+       }
+       else{
+           return res.send({status:0,message:'查询成功',data:results.length})
+       }})
+}//获取指定路径的网页今日访问IP数量

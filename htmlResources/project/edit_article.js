@@ -185,7 +185,7 @@ var app2=new Vue({
                 xmlhttp.open("POST","/my/update_article?articleID="+app2.get_Data.articleID,true);
                 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
                 xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
-                xmlhttp.send("kind="+app2.kind+"&title="+app2.title+"&article_status="+app2.status+"&data="+JSON.stringify(app2.Data));
+                xmlhttp.send("kind="+app2.kind+"&title="+app2.title+"&participator="+app2.participator+"&article_status="+app2.status+"&data="+JSON.stringify(app2.Data));
             }
         },
         get_my_article(){

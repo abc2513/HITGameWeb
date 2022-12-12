@@ -114,8 +114,8 @@ exports.update_article=(req,res)=>{
                 return res.send({status:1,message:'这篇文章并非您所有'})
         }
         else{
-            const sql=`update article set article_status=?, data=?,title=? where articleID=?`
-            db.query(sql,[req.body.article_status,req.body.data,req.body.title,req.query.articleID],(err,results)=>{
+            const sql=`update article set article_status=?, data=?,title=?,participator=? where articleID=?`
+            db.query(sql,[req.body.article_status,req.body.data,req.body.title,req.body.participator,req.query.articleID],(err,results)=>{
                 if(err) return res.cc(err+'请联系网站管理员');
                 if(results.affectedRows!==1)return res.cc('更新文章失败！稍后再试或联系网站管理员')
                 res.cc('更新文章成功',0)
