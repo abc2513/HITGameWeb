@@ -34,7 +34,7 @@ if(localStorage.getItem("token")!=""){
                 hello_div.appendChild(hello_span);
                 var mycneter=document.createElement("a");
                 mycneter.href="../my/mycenter.html"
-                mycneter.innerText="个人中心"
+                mycneter.innerText="用户中心"
                 var mycenter_div=document.getElementById("mycenter_div");
                 mycenter_div.appendChild(mycneter);
                 var myaccount=document.createElement("a");

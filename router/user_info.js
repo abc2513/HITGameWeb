@@ -10,4 +10,6 @@ router.post('/create_article',user_info_handler.create_article)//expressJoi(crea
 router.post('/update_article',user_info_handler.update_article)//expressJoi(update_article),
 router.get('/article_list',user_info_handler.get_my_article_list);
 router.get('/article',user_info_handler.get_my_article)
+router.post('/create_comment',user_info_handler.create_comment)
+router.post('/delect_comment',user_info_handler.delect_comment)
 module.exports=router

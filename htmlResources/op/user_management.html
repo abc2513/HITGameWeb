@@ -120,6 +120,14 @@
                                 </select>
                                 <button v-on:click="change_user_status">保存</button>
                             </div>
+                            <div v-if="select_user.level==2">
+                                任命为管理员：
+                                <button>任命</button>
+                            </div>
+                            <div v-if="select_user.level==3">
+                                取消任命管理员：
+                                <button>取消</button>
+                            </div>
                         </div>
                     </div>
                 </div>

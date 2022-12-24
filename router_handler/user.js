@@ -2,12 +2,6 @@ const db = require("../db/index");
 const bcrypt=require('bcryptjs');
 const jwt =require('jsonwebtoken')
 const config=require('../config')
-var containSpecial = RegExp(
-    /[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\-)(\+)(\=)(\[)(\])(\{)(\})(\|)(\;)(\')(\")(\,)(\.)(\<)(\>)(\?)(\)]+/
-);
-var danger_char=RegExp(
-    /[(\')(\")(\<)]+/
-);
 exports.regUser=(req,res)=>{
     var isFailed=0;
     console.log('reguser......')
@@ -282,3 +276,107 @@ exports.get_visit_ip_today=(req,res)=>{
            return res.send({status:0,message:'查询成功',data:results.length})
        }})
 }//获取指定路径的网页今日访问IP数量
+exports.get_visit_time_list=(req,res)=>{
+    var date=new Date;
+    var month=date.getMonth()+1;
+    var timestr=''+date.getFullYear()+'-'+month+'-'+date.getDate()+' 00:00:00'
+    var sqlStr=`
+    SELECT 
+        COUNT(ip) AS visit_num,
+        DATE_FORMAT(time,'%Y-%m-%d') AS visit_date
+    FROM visit_log
+    WHERE router=? AND time>=? AND time<=?
+    GROUP BY visit_date
+    ORDER BY visit_date
+    `
+    //console.log(timestr)
+   db.query(sqlStr,[req.query.router,req.query.start_time,req.query.end_time],(err,results)=>{
+       if(err){
+           return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+       }
+       else{
+           return res.send({status:0,message:'查询成功',data:results})
+       }})
+}//获取指定路径的网页指定时间段每日访问量
+exports.get_visit_ip_list=(req,res)=>{
+    var date=new Date;
+    var month=date.getMonth()+1;
+    var timestr=''+date.getFullYear()+'-'+month+'-'+date.getDate()+' 00:00:00'
+    var sqlStr=`
+    SELECT 
+        COUNT(distinct ip) AS visit_num,
+        DATE_FORMAT(time,'%Y-%m-%d') AS visit_date
+    FROM visit_log
+    WHERE router=? AND time>=? AND time<=?
+    GROUP BY visit_date
+    ORDER BY visit_date
+    `
+    //console.log(timestr)
+   db.query(sqlStr,[req.query.router,req.query.start_time,req.query.end_time],(err,results)=>{
+       if(err){
+           return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+       }
+       else{
+           return res.send({status:0,message:'查询成功',data:results})
+       }})
+}//获取指定路径的网页指定时间段每日访问IP量
+exports.get_visit_time_list_all=(req,res)=>{
+    var date=new Date;
+    var month=date.getMonth()+1;
+    var timestr=''+date.getFullYear()+'-'+month+'-'+date.getDate()+' 00:00:00'
+    var sqlStr=`
+    SELECT 
+        COUNT(ip) AS visit_num,
+        DATE_FORMAT(time,'%Y-%m-%d') AS visit_date
+    FROM visit_log
+    WHERE time>=? AND time<=?
+    GROUP BY visit_date
+    ORDER BY visit_date
+    `
+    //console.log(timestr)
+   db.query(sqlStr,[req.query.start_time,req.query.end_time],(err,results)=>{
+       if(err){
+           return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+       }
+       else{
+           return res.send({status:0,message:'查询成功',data:results})
+       }})
+}//获取所有网页指定时间段每日访问总量
+exports.get_visit_ip_list_all=(req,res)=>{
+    var date=new Date;
+    var month=date.getMonth()+1;
+    var timestr=''+date.getFullYear()+'-'+month+'-'+date.getDate()+' 00:00:00'
+    var sqlStr=`
+    SELECT 
+        COUNT(distinct ip) AS visit_num,
+        DATE_FORMAT(time,'%Y-%m-%d') AS visit_date
+    FROM visit_log
+    WHERE time>=? AND time<=?
+    GROUP BY visit_date
+    ORDER BY visit_date
+    `
+    //console.log(timestr)
+   db.query(sqlStr,[req.query.start_time,req.query.end_time],(err,results)=>{
+       if(err){
+           return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+       }
+       else{
+           return res.send({status:0,message:'查询成功',data:results})
+       }})
+}//获取所有网页指定时间段每日访问IP总量
+exports.get_comment_list=(req,res)=>{
+    var sqlStr=`select commentID,users.userID AS userID,users.name AS name,text,DATE_FORMAT(create_time,"%Y-%m-%d %H:%i:%s") as time
+        from comment 
+        join users on users.userID=comment.userID
+        where articleID=? and kind=? and comment.status=0`
+    db.query(sqlStr,[req.query.articleID,req.query.kind],(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到评论'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+        }})
+}//获取指定文章评论列表

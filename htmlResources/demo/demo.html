@@ -36,6 +36,34 @@
                     <div v-if="p.kind=='bv'">视频原地址：<a :href="'//www.bilibili.com/video/'+p.text">https://www.bilibili.com/video/{{p.text}}</a></div>
                     <div v-if="p.kind=='a'"><a :href="p.text">{{p.text}}</a></div>
                 </div>
+                <div style="background-color: rgba(245, 244, 219, 0.541);">
+                    <div>
+                        <h1 style="color:rgb(105, 79, 20);margin-bottom: 2px;padding: 5px;">评论</h1>
+                    </div>
+                    <div v-for="(p,index) of comment" :key="p.commentID" style="background-color: rgb(216, 216, 216);margin: 5px;width: 96%;">
+                        <div style="background-color: rgba(236, 194, 126, 0.801);width: 100%;padding: 5px;font-size: large;font-weight: 500;">
+                            {{p.name}}
+                            <span style="float: right;font-size: medium;color: rgb(131, 149, 151);">
+                                <span v-if="p.userID==userID">
+                                    <button v-on:click="delete_comment(p.commentID)">删除</button>
+                                </span>
+                                {{p.time}}
+                            </span>
+                        </div>
+                        <div style="width: 100%;background-color:rgba(220, 220, 196, 0.89);padding: 5px;">
+                            {{p.text}}
+                        </div>
+                    </div>
+                    <div style="background-color: rgb(216, 216, 216);margin: 5px;width: 96%;">
+                        <div style="background-color: rgb(238, 204, 150);width: 100%;padding: 5px;font-size: large;font-weight: 500;">
+                            发布评论
+                        </div>
+                        <div style="width: 100%;background-color:rgba(245, 222, 179, 0.734);padding: 5px;">
+                            <textarea style="width: 98%;height: 100px;resize: none;font-size: medium;" v-model="new_comment"></textarea>
+                            <button v-on:click="create_comment">评论</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <script  type="text/javascript" src="../topMenu.js"></script>

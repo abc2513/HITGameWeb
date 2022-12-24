@@ -1,8 +1,7 @@
 var app2=new Vue({
     el:'.article',
     data:{
-        Data:[],
-        announcement:[],
+        announcement:[], 
         newest_demo:[],
         best_demo:[],
         newest_project:[],
@@ -12,7 +11,6 @@ var app2=new Vue({
         today_visit_ip:0
     },
     mounted() {
-        this.get_all_article();
         this.get_n_best_demo();
         this.get_n_newest_demo();
         this.get_n_newest_project();
@@ -21,31 +19,6 @@ var app2=new Vue({
         this.get_today_visit_ip();
     },
     methods:{
-        get_all_article(){
-            var xmlhttp;
-            if (window.XMLHttpRequest)
-                xmlhttp=new XMLHttpRequest();
-            else
-                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            xmlhttp.onreadystatechange=function(){
-                if (xmlhttp.readyState==4 && xmlhttp.status==200)
-                {
-                    console.log(xmlhttp.responseText);
-                    response_json=JSON.parse(xmlhttp.responseText);
-                    if(response_json.status){
-                        //alert(response_json.message);
-                        console.log(response_json.message)
-                    }
-                    else{
-                        app2.Data=JSON.parse(response_json.data);
-                    }
-                }
-            }
-            xmlhttp.open("GET","/api/article_list?kind=0",true);
-            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-            //xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
-            xmlhttp.send();
-        },
         get_n_best_demo(){
             var xmlhttp;
             if (window.XMLHttpRequest)

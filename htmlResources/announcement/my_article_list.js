@@ -27,7 +27,7 @@ var app2=new Vue({
                     }
                 }
             }
-            xmlhttp.open("GET","/op/all_annonucement_list",true);
+            xmlhttp.open("GET","/op/all_announcement_list",true);
             xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
             xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
             xmlhttp.send();

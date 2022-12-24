@@ -39,7 +39,7 @@ exports.get_user_list=(req,res)=>{
         else{
             return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
         }})
-}//获取所有指定等级用户列表
+}//查询用户用户列表
 exports.reset_password=(req,res)=>{
     if(req.user.level<3)
         return res.send({status:1,message:'该请求需要3级权限'})
@@ -225,9 +225,26 @@ exports.get_announcement=(req,res)=>{
             return res.send({status:0,message:'查询成功',data:JSON.stringify(results[0])})
         }})
 }//获取指定ID的公告
-
-exports.operate_list=(req,res)=>{
-
+exports.get_operate_list=(req,res)=>{
+    if(req.user.level<3)
+        return res.send({status:1,message:'该请求需要3级权限'})
+    var sqlStr=`select operateID,operaterID,router,body,DATE_FORMAT(time,'%Y/%m/%d-%H:%i:%s') as time,users.name
+    from operate
+    join users on operate.operaterID=users.userID
+    where operaterID like ? and router like ? and body like ? and (time between ? and ?)
+    order by time DESC
+    `
+    //console.log(req.query.start_time+req.query.end_time)
+    db.query(sqlStr,['%'+req.query.operatorID+'%','%'+req.query.router+'%','%'+req.query.operate_body+'%',req.query.start_time+':00',req.query.end_time+':00'],(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到操作'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+        }})
 }//查询管理日志
 exports.all_operate_list=(req,res)=>{
     if(req.user.level<3)

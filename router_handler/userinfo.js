@@ -156,3 +156,107 @@ exports.get_my_article_list=(req,res)=>{
             return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
         }})
 }//获取user指定类型的文章列表
+exports.create_comment=(req,res)=>{
+    var sqlStr='select * from comment where articleID=? and userID=? and kind=?'
+    db.query(sqlStr,[req.body.articleID,req.user.userID,req.body.kind],(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length>=3){
+            return res.send({status:1,message:'一个用户只能对一篇文章发表3个评论'})
+        }
+        else{
+            var sqlStr2='select * from comment where text=? and userID=? and kind=?' 
+            db.query(
+                sqlStr2,[req.body.text,req.user.userID,req.body.kind],(err,results)=>{
+                if(err){
+                    return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+                }
+                if(results.length>=1){
+                    return res.send({status:1,message:'你发表过相同内容的评论！'})
+                }
+                else{    
+                    //console.log("trying to create article!");
+                    const mysql_str = 'insert into comment set ?'
+                    db.query(mysql_str,{articleID:req.body.articleID,userID:req.user.userID,text:req.body.text,kind:req.body.kind},(err,results)=>{
+                        if(err) {
+                            return  res.send({status:1,message:err.message+',数据库出错，请联系网站开发者'})
+                        }
+                        else if(results.affectedRows!==1){
+                            return res.send({status:1,message:'评论失败，请稍后再试或联系网站开发者'})
+                        }
+                        else{
+                            return res.send({status:0, message:'评论成功'})
+                        }
+                    })
+            }});
+        }})
+}//发表评论
+exports.delect_comment=(req,res)=>{
+    var sqlStr='select * from comment where commentID=?'
+    db.query(sqlStr,[req.body.commentID],(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'找不到指定的评论'})
+        }
+        if(results[0].userID!=req.user.userID){
+            return res.cc('这条评论并不属于你')
+        }
+        else{
+            var sqlStr2='delete from comment where commentID=?' 
+            db.query(
+                sqlStr2,[req.body.commentID],(err,results)=>{
+                if(err){
+                    return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+                }
+                if(results.affectedRows!=1){
+                    return res.send({status:1,message:'删除失败！请联系网站开发者'})
+                }
+                else{    
+                    return res.send({status:0,message:'删除评论成功！'})
+                }
+            });
+        }
+    })
+}//删除评论
+exports.thumbs_up_change=(req,res)=>{
+    var sqlStr='select * from comment where articleID=? and kind=?'
+    db.query(sqlStr,[req.body.articleID,req.body.kind],(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            //创建点赞信息
+            const sql2=`insert thumbs_up set ? `
+            db.query(sql2,{userID:req.user.userID,articleID:req.body.articleID,value:1},(err,results)=>{
+                if(err) return res.cc(err);
+                if(results.affectedRows!==1)return res.cc('点赞失败')
+                res.cc('点赞成功',0)})
+        }
+        else{
+            //修改点赞信息
+            var value=(results[0].value+1)%2;
+            var commentID=results[0].commentID
+            const sql2=`update thumbs_up set value=? where commentID=?`
+            db.query(sql2,[value,commentID],(err,results)=>{
+                if(err) return res.cc(err);
+                if(results.affectedRows!==1)return res.cc((value==1?'':'取消')+'点赞失败')
+                res.cc((value==1?'':'取消')+'点赞成功',0)})
+        }
+    })
+}//点赞/取消点赞
+exports.thumbs_up_check=(req,res)=>{
+    var sqlStr='select * from article where authorID=? and kind=?'
+    db.query(sqlStr,[req.user.userID,req.query.kind],(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到文章'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+        }})
+}
