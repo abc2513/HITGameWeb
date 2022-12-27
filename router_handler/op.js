@@ -192,9 +192,71 @@ exports.change_user_status=(req,res)=>{
 exports.get_all_article_list=(req,res)=>{
 }//获取指定类型的文章列表(包括草稿)
 exports.change_article_status=(req,res)=>{
+    if(req.user.level<3)
+        return res.send({status:1,message:'该请求需要3级权限'})
+    var sqlStr=`select * from article where articleID=?`
+    db.query(sqlStr,req.body.articleID,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到文章'})
+        }
+        else{
+            const sql=`update article set article_status=? where articleID=?`
+            db.query(sql,[req.body.status,req.body.articleID],(err,results)=>{
+                if(err) return res.cc(err+'请联系网站管理员');
+                if(results.affectedRows!==1)return res.cc('修改文章状态失败！也许该文章已经是指定的状态？或者稍后再试或联系网站管理员')
+                res.cc('修改文章状态成功',0)
+                var router="change_article_status";
+                var sql_str=`insert into operate set operaterID=?,router=?,body=?`
+                db.query(sql_str,[req.user.userID,router,JSON.stringify(req.body)],(err,results)=>{
+                    if(err) {
+                        console.log(err.message)
+                    }
+                    else if(results.affectedRows!==1){
+                        console.log('操作数据库失败')
+                    }
+                    else{
+                        //console.log('有人访问系统啦！')
+                    }})
+            })
+        }
+    })
 }//修改指定文章状态（发布/草稿）
-exports.change_user_level=(req,res)=>{
-}//修改用户权限等级
+exports.set_article_level=(req,res)=>{
+    if(req.user.level<3)
+        return res.send({status:1,message:'该请求需要3级权限'})
+    var sqlStr=`select * from article where articleID=?`
+    db.query(sqlStr,req.body.articleID,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到文章'})
+        }
+        else{
+            const sql=`update article set level=? where articleID=?`
+            db.query(sql,[req.body.level,req.body.articleID],(err,results)=>{
+                if(err) return res.cc(err+'请联系网站管理员');
+                if(results.affectedRows!==1)return res.cc('修改文章评分失败！稍后再试或联系网站管理员')
+                res.cc('修改文章评分成功',0)
+                var router="set_article_level";
+                var sql_str=`insert into operate set operaterID=?,router=?,body=?`
+                db.query(sql_str,[req.user.userID,router,JSON.stringify(req.body)],(err,results)=>{
+                    if(err) {
+                        console.log(err.message)
+                    }
+                    else if(results.affectedRows!==1){
+                        console.log('操作数据库失败')
+                    }
+                    else{
+                        //console.log('有人访问系统啦！')
+                    }})
+            })
+        }
+    })
+}//设置指定ID文章的评分
 exports.get_all_annonucement_list=(req,res)=>{
     if(req.user.level<3)
     return res.send({status:1,message:'该请求需要3级权限'})
@@ -264,3 +326,36 @@ exports.all_operate_list=(req,res)=>{
             return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
         }})
 }//获取所有管理日志
+exports.delete_comment=(req,res)=>{
+    if(req.user.level<3)
+        return res.send({status:1,message:'该请求需要3级权限'})
+    var sqlStr=`select * from comment where commentID=?`
+    db.query(sqlStr,req.body.commentID,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到评论'})
+        }
+        else{
+            const sql=`update comment set status=? where commentID=?`
+            db.query(sql,[req.body.status,req.body.commentID],(err,results)=>{
+                if(err) return res.cc(err+'请联系网站管理员');
+                if(results.affectedRows!==1)return res.cc('更改评论可视性失败！稍后再试或联系网站管理员')
+                res.cc('更改评论可视性成功！',0)
+                var router="delete_comment";
+                var sql_str=`insert into operate set operaterID=?,router=?,body=?`
+                db.query(sql_str,[req.user.userID,router,JSON.stringify(req.body)],(err,results)=>{
+                    if(err) {
+                        console.log(err.message)
+                    }
+                    else if(results.affectedRows!==1){
+                        console.log('操作数据库失败')
+                    }
+                    else{
+                        //console.log('有人访问系统啦！')
+                    }})
+            })
+        }
+    })
+}//修改指定ID的评论可见性

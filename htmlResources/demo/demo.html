@@ -20,6 +20,13 @@
                     {{Data.name}}
                     <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">参与者</span>
                     {{Data.participator}}
+                    <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">评分</span>
+                    {{Data.level}}
+                    <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">点赞数</span>
+                    {{article_thumbs_up_num}}
+                    <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">阅读数</span>
+                    {{Data.read_time}}
+                    <a style="font-size: medium;color: rgb(83, 104, 107);" v-on:click="jump_to_panel">【阅读量统计图表】</a>
                 </p>
                 <div v-for="(p,index) of Data.data" :key="index">
                     <p v-if="p.kind=='p'" style="line-height: 1.9;margin-left: 20px;margin-right: 20px;">{{p.text}}</p>
@@ -40,18 +47,36 @@
                     <div>
                         <h1 style="color:rgb(105, 79, 20);margin-bottom: 2px;padding: 5px;">评论</h1>
                     </div>
-                    <div v-for="(p,index) of comment" :key="p.commentID" style="background-color: rgb(216, 216, 216);margin: 5px;width: 96%;">
-                        <div style="background-color: rgba(236, 194, 126, 0.801);width: 100%;padding: 5px;font-size: large;font-weight: 500;">
-                            {{p.name}}
-                            <span style="float: right;font-size: medium;color: rgb(131, 149, 151);">
-                                <span v-if="p.userID==userID">
-                                    <button v-on:click="delete_comment(p.commentID)">删除</button>
+                    <div>
+                        <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">评分</span>
+                        {{Data.level}}
+                        <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">点赞数</span>
+                        {{article_thumbs_up_num}}
+                        <button v-on:click="thumbs_up_change_article"><span v-if="my_thumbs_up">取消</span>点赞</button>
+                        <span v-if="user_level>=3" style="margin-left: 10px;">
+                            管理员修改评分:<input type="text" v-model="new_article_level" style="width: 50px;">
+                            <button v-on:click="set_article_level">修改</button>
+                            <button v-on:click="op_change_article_status(1)">设置文章为草稿</button>
+                            <button v-on:click="op_change_article_status(0)">设置文章为公开</button>
+                        </span>
+                    </div>
+                    <div v-if="comment.length!=0">
+                        <div  v-for="(p,index) of comment" :key="p.commentID" style="background-color: rgb(216, 216, 216);margin: 5px;width: 96%;">
+                            <div style="background-color: rgba(236, 194, 126, 0.801);width: 100%;padding: 5px;font-size: large;font-weight: 500;">
+                                {{p.name}}
+                                <span style="float: right;font-size: medium;color: rgb(131, 149, 151);">
+                                    <span v-if="user_level>=3">
+                                        <button v-on:click="op_delete_comment(p.commentID)" style="color:rgb(149, 0, 0)">管理员删除</button>
+                                    </span>
+                                    <span v-if="p.userID==userID">
+                                        <button v-on:click="delete_comment(p.commentID)">删除</button>
+                                    </span>
+                                    {{p.time}}
                                 </span>
-                                {{p.time}}
-                            </span>
-                        </div>
-                        <div style="width: 100%;background-color:rgba(220, 220, 196, 0.89);padding: 5px;">
-                            {{p.text}}
+                            </div>
+                            <div style="width: 100%;background-color:rgba(220, 220, 196, 0.89);padding: 5px;">
+                                {{p.text}}
+                            </div>
                         </div>
                     </div>
                     <div style="background-color: rgb(216, 216, 216);margin: 5px;width: 96%;">

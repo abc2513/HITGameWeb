@@ -176,7 +176,10 @@ exports.login=(req,res)=>{
     }
 }//用户登录
 exports.get_article_list=(req,res)=>{
-    var sqlStr=`select articleID,title,article.level,name,DATE_FORMAT(create_time, '%Y/%m/%d-%H:%i:%s') as create_time
+    var sqlStr=`select article.articleID,article.title,article.level,users.name,
+                    DATE_FORMAT(article.create_time, '%Y/%m/%d-%H:%i:%s') as create_time,
+                    (SELECT COUNT(value) from thumbs_up where articleID=article.articleID and kind=1 and value=1)as thumbs_up_num,
+                    (SELECT COUNT(time) from read_log where articleID=article.articleID) AS read_time
      from article join users on users.userID=article.authorID
      where article_status=0 and kind=?
      order by article.level DESC ,create_time DESC
@@ -193,7 +196,8 @@ exports.get_article_list=(req,res)=>{
         }})
 }//获取指定类型的公开文章列表
 exports.get_article=(req,res)=>{
-    var sqlStr=`select article.*,users.name
+    var sqlStr=`select article.*,users.name,
+    (SELECT COUNT(time) from read_log where articleID=article.articleID) AS read_time
      from article join users on article.authorID=users.userID
      where article_status=0 and articleID=?`
     db.query(sqlStr,[req.query.articleID],(err,results)=>{
@@ -204,11 +208,23 @@ exports.get_article=(req,res)=>{
             return res.send({status:1,message:'文章不存在或暂未发表'})
         }
         else{
-            return res.send({status:0,message:'查询成功',data:JSON.stringify(results[0])})
+            res.send({status:0,message:'查询成功',data:JSON.stringify(results[0])})
+            var sql_str=`insert into read_log set articleID=?,ip=?`
+            db.query(sql_str,[req.query.articleID,req.ip],(err,results)=>{
+                if(err) {
+                    console.log(err.message)
+                }
+                else if(results.affectedRows!==1){
+                    console.log('操作数据库失败')
+                }
+                else{
+                    //console.log('有人访问系统啦！')
+                }})
         }})
 }//获取指定ID的公开文章
 exports.get_n_newest_article=(req,res)=>{
-    var sqlStr=`select articleID,title,article.level,name,DATE_FORMAT(create_time, '%Y/%m/%d-%H:%i:%s') as create_time
+    var sqlStr=`select articleID,title,article.level,name,DATE_FORMAT(create_time, '%Y/%m/%d-%H:%i:%s') as create_time,(SELECT COUNT(value) from thumbs_up where articleID=article.articleID and kind=1 and value=1)as thumbs_up_num,
+    (SELECT COUNT(time) from read_log where articleID=article.articleID) AS read_time
      from article join users on users.userID=article.authorID
      where article_status=0 and kind=?
      order by create_time DESC
@@ -226,7 +242,8 @@ exports.get_n_newest_article=(req,res)=>{
         }})
 }//获取n个最新的DEMO/项目
 exports.get_n_best_article=(req,res)=>{
-    var sqlStr=`select articleID,title,article.level,name,DATE_FORMAT(create_time, '%Y/%m/%d-%H:%i:%s') as create_time
+    var sqlStr=`select articleID,title,article.level,name,DATE_FORMAT(create_time, '%Y/%m/%d-%H:%i:%s') as create_time,(SELECT COUNT(value) from thumbs_up where articleID=article.articleID and kind=1 and value=1)as thumbs_up_num,
+    (SELECT COUNT(time) from read_log where articleID=article.articleID) AS read_time
      from article join users on users.userID=article.authorID
      where article_status=0 and kind=?
      order by article.level DESC ,create_time DESC
@@ -277,9 +294,6 @@ exports.get_visit_ip_today=(req,res)=>{
        }})
 }//获取指定路径的网页今日访问IP数量
 exports.get_visit_time_list=(req,res)=>{
-    var date=new Date;
-    var month=date.getMonth()+1;
-    var timestr=''+date.getFullYear()+'-'+month+'-'+date.getDate()+' 00:00:00'
     var sqlStr=`
     SELECT 
         COUNT(ip) AS visit_num,
@@ -380,3 +394,56 @@ exports.get_comment_list=(req,res)=>{
             return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
         }})
 }//获取指定文章评论列表
+exports.get_thumbs_up_num=(req,res)=>{
+    var sqlStr=`select COUNT(value) as thumbs_up_num
+    from thumbs_up
+    where articleID=? and kind=? and value=1`
+db.query(sqlStr,[req.query.articleID,req.query.kind],(err,results)=>{
+    if(err){
+        return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+    }
+    if(results.length==0){
+        return res.send({status:1,message:'查询不到点赞数'})
+    }
+    else{
+        return res.send({status:0,message:'查询成功',data:JSON.stringify(results[0].thumbs_up_num)})
+    }})
+}//获取指定文章点赞数
+exports.get_read_time_list=(req,res)=>{
+    var sqlStr=`
+    SELECT 
+        COUNT(ip) AS visit_num,
+        DATE_FORMAT(time,'%Y-%m-%d') AS visit_date
+    FROM read_log
+    WHERE articleID=? AND time>=? AND time<=?
+    GROUP BY visit_date
+    ORDER BY visit_date
+    `
+    //console.log(timestr)
+   db.query(sqlStr,[req.query.articleID,req.query.start_time,req.query.end_time],(err,results)=>{
+       if(err){
+           return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+       }
+       else{
+           return res.send({status:0,message:'查询成功',data:results})
+       }})
+}//获取指定ID的文章指定时间段内每天的阅读数
+exports.get_read_ip_list=(req,res)=>{
+    var sqlStr=`
+    SELECT 
+        COUNT(distinct ip) AS visit_num,
+        DATE_FORMAT(time,'%Y-%m-%d') AS visit_date
+    FROM read_log
+    WHERE articleID=? AND time>=? AND time<=?
+    GROUP BY visit_date
+    ORDER BY visit_date
+    `
+    //console.log(timestr)
+   db.query(sqlStr,[req.query.articleID,req.query.start_time,req.query.end_time],(err,results)=>{
+       if(err){
+           return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+       }
+       else{
+           return res.send({status:0,message:'查询成功',data:results})
+       }})
+}

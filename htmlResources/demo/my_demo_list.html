@@ -31,9 +31,11 @@
                     </div>
                     <div class="text_div">
                         <div v-for="(p,index) of Data" :key="index" class="list_div">
+                            <span style="font-size: small;color: rgb(90, 108, 110);">#{{index+1}}</span>
                             <span v-if="p.article_status==0" style="color:rgb(91, 55, 11) ;font-weight: 900;">公开</span>
                             <span v-if="p.article_status==1" style="color:rgb(15, 104, 10) ;font-weight: 900;">草稿</span>
-                            <a :href="'./demo.html?articleID='+Data[index].articleID">{{index+1}}:{{p.title}}</a>
+                            
+                            <a :href="'./demo.html?articleID='+Data[index].articleID">{{p.title}}</a>
                             <a :href="'./my_demo.html?articleID='+Data[index].articleID" style="color:rgb(81, 48, 9) ;font-weight: 800;">预览</a>
                             <a :href="'./edit_demo.html?articleID='+Data[index].articleID" style="color:rgb(77, 47, 9) ;font-weight: 800;">编辑</a>
                         </div>

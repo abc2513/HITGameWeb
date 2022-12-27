@@ -45,8 +45,8 @@
                         <option value="upgrade_3">任命管理员</option>
                         <option value="downgrade_2">任命管理员</option>
                         <option value="hand_level_4">交接level4</option>
-                    
                     </select>
+                    <input style="width: 140px;" v-model="router">
                     操作内容：<input type="text" v-model="operate_body" style="width: 400px;">
                     <br>
                     起始时间；<input type="date" v-model="start_date" style="width: auto;">
@@ -71,12 +71,14 @@
                             <span style="width:200px;display: inline-block;">类型</span>
                             <span style="width:250px;display: inline-block;">时间</span>
                         </div>
-                        <div v-for="(p,index) of log_list" :key="p.operateID" class="list_div">
-                            <span style="width:60px;display: inline-block;">{{index}}</span>
-                            <span style="width:160px;display: inline-block;">{{p.operaterID}}{{p.name}}</span>
-                            <span style="width:200px;display: inline-block;">{{router_kind(p.router)}}</span>
-                            <span style="width:250px;display: inline-block;">{{p.time}}</span>
-                            <button  style="float: right;" v-on:click="select(index)">选择</button>
+                        <div style="height: 250px;overflow-y: scroll;">
+                            <div v-for="(p,index) of log_list" :key="p.operateID" class="list_div">
+                                <span style="width:60px;display: inline-block;">{{index}}</span>
+                                <span style="width:160px;display: inline-block;">{{p.operaterID}}{{p.name}}</span>
+                                <span style="width:200px;display: inline-block;">{{router_kind(p.router)}}</span>
+                                <span style="width:250px;display: inline-block;">{{p.time}}</span>
+                                <button  style="float: right;" v-on:click="select(index)">选择</button>
+                            </div>
                         </div>
                     </div>
                 </div>

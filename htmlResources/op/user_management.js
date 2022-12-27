@@ -242,6 +242,77 @@ var app2=new Vue({
             xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
             xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
             xmlhttp.send('userID='+app2.select_user.userID+'&user_status='+app2.select_user.user_status);
+        },
+        downgrade_2(){
+            var xmlhttp;
+            if (window.XMLHttpRequest)
+                xmlhttp=new XMLHttpRequest();
+            else
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            xmlhttp.onreadystatechange=function(){
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    console.log(xmlhttp.responseText);
+                    response_json=JSON.parse(xmlhttp.responseText);
+                    if(response_json.status){
+                        alert(response_json.message);
+                    }
+                    else{//成功
+                        alert(response_json.message);
+                        //更新内容
+                        var select_user=app2.select_user
+                        app2.get_user_list();
+                        var i=0;
+                        while(i<app2.user_list.length){
+                            if(select_user.userID==app2.user_list[i].userID){
+                                app2.select_user=app2.user_list[i];
+                                break;
+                            }
+                            i++;
+                        }
+                    }
+                }
+            }
+            xmlhttp.open("POST","/op4/downgrade_2",false);
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
+            xmlhttp.send('userID='+app2.select_user.userID);
+        },
+        upgrade_3(){
+            var xmlhttp;
+            if (window.XMLHttpRequest)
+                xmlhttp=new XMLHttpRequest();
+            else
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            xmlhttp.onreadystatechange=function(){
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    console.log(xmlhttp.responseText);
+                    response_json=JSON.parse(xmlhttp.responseText);
+                    if(response_json.status){
+                        alert(response_json.message);
+                    }
+                    else{//成功
+                        alert(response_json.message);
+                        //更新内容
+                        var select_user=app2.select_user
+                        app2.get_user_list();
+                        var i=0;
+                        while(i<app2.user_list.length){
+                            if(select_user.userID==app2.user_list[i].userID){
+                                app2.select_user=app2.user_list[i];
+                                break;
+                            }
+                            i++;
+                        }
+                    }
+                }
+            }
+            xmlhttp.open("POST","/op4/upgrade_3",false);
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
+            xmlhttp.send('userID='+app2.select_user.userID);
+
         }
     },
 }) 

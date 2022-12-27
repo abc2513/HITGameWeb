@@ -64,14 +64,31 @@
                 </div>
                 <div class="s_kind_div">
                     <span>查询结果</span>
+                    <span style="font-size: medium;">{{user_list.length}}条</span>
                 </div>
                 <div class="text_div">
-                    <div v-if="!user_list[0]">空列表</div>
+                    <div v-if="!user_list[0]">无</div>
                     <div v-else>
-                        <div v-for="(p,index) of user_list" :key="index" class="list_div">
-                            {{p.level}};{{p.userID}};{{p.name}};{{p.email}};{{p.studentID}};{{p.realname}}
-                            <button v-on:click="select(p)" style="float: right;">选择</button>
+                        <div class="list_div">
+                            <span style="width:5%;display: inline-block;">序号</span>
+                            <span style="width:4%;display: inline-block;">等级</span>
+                            <span style="width:10%;display: inline-block;">账号</span>
+                            <span style="width:15%;display: inline-block;">用户名</span>
+                            <span style="width:20%;display: inline-block;">邮箱</span>
+                            <span style="width:15%;display: inline-block;">学号</span>
+                            <span style="width:10%;display: inline-block;">真实姓名</span>
                         </div>
+                        <div style="height: 250px;overflow-y: scroll;">
+                            <div v-for="(p,index) of user_list" :key="index" class="list_div">
+                            <span style="width:5%;display: inline-block;">{{index}}</span>
+                            <span style="width:4%;display: inline-block;">{{p.level}}</span>
+                            <span style="width:10%;display: inline-block;">{{p.userID}}</span>
+                            <span style="width:15%;display: inline-block;">{{p.name}}</span>
+                            <span style="width:20%;display: inline-block;">{{p.email}}</span>
+                            <span style="width:15%;display: inline-block;">{{p.studentID}}</span>
+                            <span style="width:10%;display: inline-block;">{{p.realname}}</span>
+                            <button v-on:click="select(p)" style="float: right;">选择</button>
+                        </div></div>
                     </div>
                 </div>
                 <div v-if="select_user.userID">
@@ -122,11 +139,11 @@
                             </div>
                             <div v-if="select_user.level==2">
                                 任命为管理员：
-                                <button>任命</button>
+                                <button v-on:click="upgrade_3">任命</button>
                             </div>
                             <div v-if="select_user.level==3">
                                 取消任命管理员：
-                                <button>取消</button>
+                                <button v-on:click="downgrade_2">取消</button>
                             </div>
                         </div>
                     </div>

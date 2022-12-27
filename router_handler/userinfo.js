@@ -59,49 +59,60 @@ exports.create_article=(req,res)=>{
             res.cc('您的用户权限只能创建kind=1/2/0的文章')
         }
     }
-    var sqlStr='select * from article where authorID=? and kind=?'
-    db.query(sqlStr,[req.user.userID,req.body.kind],(err,results)=>{
+    var sqlStr='select * from article where authorID=? and kind=? and create_time>=?'
+    var cal_time=new Date();
+    cal_time.setMonth(cal_time.getMonth()-1)
+    //console.log(cal_time)
+    db.query(sqlStr,[req.user.userID,req.body.kind,cal_time],(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
         }
-        if(results.length>=2){
-            return res.send({status:1,message:' 用户文章上限暂时为2'})
-        }
-        else{
-            var sqlStr2='select * from article where title=? and kind=?'
-            db.query(
-                sqlStr2,[req.body.title,req.body.kind],(err,results)=>{
-                if(err){
-                    return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        switch(req.body.kind){
+            case '1':
+                if(results.length>=5){
+                    return res.send({status:1,message:'用户每月仅能发布5篇DEMO'})
                 }
-                if(results.length>=1){
-                    return res.send({status:1,message:' 存在一篇同名的文章！'})
+                break;
+            case '2':
+                if(results.length>=2){
+                    return res.send({status:1,message:'用户每月仅能发布2项目文章'})
                 }
-                else{    
-                    console.log("trying to create article!");
-                    const mysql_str = 'insert into article set ?'
-                    db.query(mysql_str,{title:req.body.title,kind:req.body.kind,article_status:req.body.article_status,data:req.body.data,authorID:req.user.userID,participator:req.body.participator},(err,results)=>{
-                        if(err) {
-                            return  res.send({status:1,message:err.message+',数据库出错，请联系网站开发者'})
-                        }
-                        else if(results.affectedRows!==1){
-                            return res.send({status:1,message:'创建文章失败，请稍后再试或联系网站开发者'})
-                        }
-                        else{
-                            var sqlStr3='select * from article where title=?'
-                            db.query(
-                                sqlStr3,req.body.title,(err,results)=>{
-                                if(err){
-                                    return res.send({status:1, message:err.message+'创建文章成功，但是出现了意外错误导致无法获取ID，请您自行进入“我的DEMO”查看文章'})
-                                }
-                                else{
-                                    return res.send({status:0, message:'创建文章成功',articleID:results[0].articleID})
-                                }
-                            })
-                        }
-                    })
+                break;
+            }
+        var sqlStr2='select * from article where title=? and kind=?'
+        db.query(
+            sqlStr2,[req.body.title,req.body.kind],(err,results)=>{
+            if(err){
+                return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+            }
+            if(results.length>=1){
+                return res.send({status:1,message:' 存在一篇同名的文章！'})
+            }
+            else{    
+                console.log("trying to create article!");
+                const mysql_str = 'insert into article set ?'
+                db.query(mysql_str,{title:req.body.title,kind:req.body.kind,article_status:req.body.article_status,data:req.body.data,authorID:req.user.userID,participator:req.body.participator},(err,results)=>{
+                    if(err) {
+                        return  res.send({status:1,message:err.message+',数据库出错，请联系网站开发者'})
+                    }
+                    else if(results.affectedRows!==1){
+                        return res.send({status:1,message:'创建文章失败，请稍后再试或联系网站开发者'})
+                    }
+                    else{
+                        var sqlStr3='select * from article where title=?'
+                        db.query(
+                            sqlStr3,req.body.title,(err,results)=>{
+                            if(err){
+                                return res.send({status:1, message:err.message+'创建文章成功，但是出现了意外错误导致无法获取ID，请您自行进入“我的DEMO”查看文章'})
+                            }
+                            else{
+                                return res.send({status:0, message:'创建文章成功',articleID:results[0].articleID})
+                            }
+                        })
+                    }
+                })
             }});
-        }})
+        })
 }//创建文章
 exports.update_article=(req,res)=>{
     var sqlStr='select authorID from article where articleID=? '
@@ -157,7 +168,7 @@ exports.get_my_article_list=(req,res)=>{
         }})
 }//获取user指定类型的文章列表
 exports.create_comment=(req,res)=>{
-    var sqlStr='select * from comment where articleID=? and userID=? and kind=?'
+    var sqlStr='select * from comment where articleID=? and userID=? and kind=? and status=0'
     db.query(sqlStr,[req.body.articleID,req.user.userID,req.body.kind],(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
@@ -222,7 +233,7 @@ exports.delect_comment=(req,res)=>{
     })
 }//删除评论
 exports.thumbs_up_change=(req,res)=>{
-    var sqlStr='select * from comment where articleID=? and kind=?'
+    var sqlStr='select * from thumbs_up where articleID=? and kind=?'
     db.query(sqlStr,[req.body.articleID,req.body.kind],(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
@@ -230,7 +241,7 @@ exports.thumbs_up_change=(req,res)=>{
         if(results.length==0){
             //创建点赞信息
             const sql2=`insert thumbs_up set ? `
-            db.query(sql2,{userID:req.user.userID,articleID:req.body.articleID,value:1},(err,results)=>{
+            db.query(sql2,{userID:req.user.userID,articleID:req.body.articleID,value:1,kind:req.body.kind},(err,results)=>{
                 if(err) return res.cc(err);
                 if(results.affectedRows!==1)return res.cc('点赞失败')
                 res.cc('点赞成功',0)})
@@ -238,9 +249,9 @@ exports.thumbs_up_change=(req,res)=>{
         else{
             //修改点赞信息
             var value=(results[0].value+1)%2;
-            var commentID=results[0].commentID
-            const sql2=`update thumbs_up set value=? where commentID=?`
-            db.query(sql2,[value,commentID],(err,results)=>{
+            var thumbs_upID=results[0].thumbs_upID
+            const sql2=`update thumbs_up set value=? where thumbs_upID=?`
+            db.query(sql2,[value,thumbs_upID],(err,results)=>{
                 if(err) return res.cc(err);
                 if(results.affectedRows!==1)return res.cc((value==1?'':'取消')+'点赞失败')
                 res.cc((value==1?'':'取消')+'点赞成功',0)})
@@ -248,15 +259,15 @@ exports.thumbs_up_change=(req,res)=>{
     })
 }//点赞/取消点赞
 exports.thumbs_up_check=(req,res)=>{
-    var sqlStr='select * from article where authorID=? and kind=?'
-    db.query(sqlStr,[req.user.userID,req.query.kind],(err,results)=>{
+    var sqlStr='select * from thumbs_up where articleID=? and kind=? and userID=?'
+    db.query(sqlStr,[req.query.articleID,req.query.kind,req.user.userID],(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
         }
         if(results.length==0){
-            return res.send({status:1,message:'查询不到文章'})
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results[0])})
         }
         else{
-            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results[0])})
         }})
-}
+}//获取自己对当前文章的点赞情况

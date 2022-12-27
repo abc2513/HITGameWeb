@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8"/>
+		<title>Panel</title>
+        <script type="text/javascript" src="../vue.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css"> 
+        <script src = "https://MomentJS.com/downloads/moment.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+        <link rel="shortcut icon" href="../resource/favicon64.ico">
+        <style>
+            .search_div{
+                margin: 10px;
+                font-size: large;
+            }
+            button{
+                font-size: large;
+            }
+            input{
+                font-size: medium;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root">
+            <div id="top_menu">
+                <top_menu></top_menu>
+                <top_menu_shadow></top_menu_shadow>
+            </div>
+            <div class="article"> 
+                <h1 style="color: #248adebd;padding: 5px;margin-top: 5px;margin-bottom: 0;padding-bottom: 0;">文章阅读统计</h1>
+                <br>
+                <div style="width: 98%;height: 520px;margin: auto;">
+                    <canvas id="myChart" width="400px" height="400px" style="border:1px solid #000000;"></canvas>
+                </div>
+                <div class="search_div">
+                    开始时间：<input type="date" v-model="start_date">
+                    结束时间：<input type="date" v-model="end_date">
+                    统计对象：<input type="text" v-model="articleID">
+                    <button v-on:click="search">查询</button>
+                </div>
+            </div>
+
+        </div>
+        <script  type="text/javascript" src="../topMenu.js"></script>
+        <script  type="text/javascript" src="../reload_top_menu.js"></script>
+        <script  type="text/javascript" src="./article_panel.js"></script>
+    </body>
+</html>

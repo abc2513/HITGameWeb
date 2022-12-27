@@ -16,4 +16,7 @@ router.get('/visit_ip_list',user_handler.get_visit_ip_list)
 router.get('/visit_time_list_all',user_handler.get_visit_time_list_all)
 router.get('/visit_ip_list_all',user_handler.get_visit_ip_list_all)
 router.get('/comment_list',user_handler.get_comment_list)
+router.get('/thumbs_up_num',user_handler.get_thumbs_up_num)
+router.get('/read_time_list',user_handler.get_read_time_list)
+router.get('/read_ip_list',user_handler.get_read_ip_list)
 module.exports=router

@@ -60,7 +60,7 @@
                     <a href="./web_panel.html" style="color: rgba(224, 239, 242, 0.673);font-size: medium;">更多</a>
                 </div>
                 <div style="font-size: large;font-weight: 100;text-align: center;color:white;margin-top: 5px;width: 91%;">
-                    这里是哈尔滨工业大学游戏开发社团的网站，你可以在这里查看别人分享的自制游戏、寻找适合自己加入的项目/团队，也可以分享自己的游戏DEMO、发布寻找开发伙伴的文章。欢迎你的到来！衷心希望你能在这里找到你所期望的。
+                    这里是哈尔滨工业大学独立游戏开发社团的网站，你可以在这里查看别人分享的自制游戏、寻找适合自己加入的项目/团队，也可以分享自己的游戏DEMO、发布寻找开发伙伴的文章。欢迎你的到来！衷心希望你能在这里找到你所期望的。
                 </div>
 
             </div>
@@ -87,8 +87,13 @@
                 </div> 
                 <div class="text_div">
                     <div v-for="(p,index) of best_demo" :key="index" class="list_div">
-                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
-                        <span style="float: left;">{{p.level}}-{{p.name}}-</span>
+                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">
+                            {{p.level}}<span style="font-size: small;">分</span>
+                            {{p.thumbs_up_num}}<span style="font-size: small;">赞</span>
+                            {{p.read_time}}<span style="font-size: small;">阅</span>
+                            {{p.create_time}}
+                        </span>
+                        <span style="float: left;">{{p.name}}</span>
                         <a :href="'../demo/demo.html?articleID='+p.articleID">{{p.title}}</a>
                     </div>
                 </div>
@@ -102,8 +107,13 @@
                 </div> 
                 <div class="text_div">
                     <div v-for="(p,index) of newest_demo" :key="index" class="list_div">
-                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
-                        <span style="float: left;">{{p.name}}-</span>
+                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">
+                            {{p.level}}<span style="font-size: small;">分</span>
+                            {{p.thumbs_up_num}}<span style="font-size: small;">赞</span>
+                            {{p.read_time}}<span style="font-size: small;">阅</span>
+                            {{p.create_time}}
+                        </span>
+                        <span style="float: left;">{{p.name}}</span>
                         <a :href="'../demo/demo.html?articleID='+p.articleID">{{p.title}}</a>
                     </div>
                 </div>
@@ -118,10 +128,17 @@
                 <div class="text_div">
                     <div v-for="(p,index) of newest_project" :key="index" class="list_div">
                         <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
-                        <span style="float: left;">{{p.name}}-</span>
+                        <span style="float: left;">{{p.name}}</span>
                         <a :href="'../project/article.html?articleID='+p.articleID">{{p.title}}</a>
                     </div>
                 </div>
+            </div>
+            <div style="background-color: rgba(184, 197, 214, 0.609);color: rgb(48, 59, 72);font-size: small;text-align: center;margin: 10px;">
+                哈尔滨工业大学游戏开发社团网站
+                <br>本站内原创内容版权属于其原创作者，除作者或版规特别声明外未经许可不得转载；内容或观点只代表作者，不代表社团
+                <br>抵制不良游戏 拒绝盗版游戏 注意自我保护 谨防受骗上当 适度游戏益脑 沉迷游戏伤身 合理安排时间 享受健康生活
+                <br>社团qq群：925746573|
+                <a href="./user_agreement.html" style="color: rgb(48, 59, 72);font-size: small;">用户协议</a>
             </div>
         </div>
 
