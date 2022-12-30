@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>管理主页展示</title>
+    <script type="text/javascript" src="../vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="../edit_article.css">
+    <link rel="shortcut icon" href="../resource/favicon64.ico">
+    <style>
+        input{
+            width: 180px;
+            margin-left: 2px;
+            margin-right: 5px;
+        }
+        select{
+            margin-left: 2px;
+            margin-right: 5px;
+        }
+        .text_div{
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <div id="top_menu">
+            <top_menu></top_menu>
+        </div>
+        <div class="article" style="min-height: 2000px;">
+            <h1>管理主页展示</h1>
+            <div v-if="if_ready">
+                <div class="p_div" v-for="(p,index) of main_info" :key="index">
+                    <div class="s_kind_div">
+                        <span>编辑{{index}}</span>
+                    </div>
+                    <div class="text_div" style="line-height: 2;">
+                        <span style="font-weight: 600;color: rgb(9, 9, 133);">articleID:</span><input type="text" v-model.lazy="show[index].articleID">
+                        <button v-on:click="save(index)">保存</button>
+                        <br>
+                        <span style="font-weight: 600;color: rgb(9, 9, 133);">title:</span>{{p.title}}<br>
+                        <span style="font-weight: 600;color: rgb(9, 9, 133);">img:</span>{{p.pic}}
+                        <div style="width: 200px;height: 150px;">
+                            <img :src="p.pic" :title="p.title" style="object-fit: cover;height: 100%;width: 100%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../topMenu.js"></script>
+    <script type="text/javascript" src="../reload_top_menu.js"></script>
+    <script type="text/javascript" src="../check_login_3.js"></script>
+    <script type="text/javascript" src="./index_show.js"></script>
+</body>

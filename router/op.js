@@ -15,4 +15,5 @@ router.get('/all_announcement_list',user_handler.get_all_annonucement_list)
 router.get('/operate_list',user_handler.get_operate_list)
 router.post('/set_article_level',user_handler.set_article_level)
 router.post('/delete_comment',user_handler.delete_comment)
+router.post('/set_index_show',user_handler.set_index_show)
 module.exports=router

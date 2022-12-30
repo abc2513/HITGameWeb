@@ -2,7 +2,7 @@
 <html>
     <head>
 		<meta charset="UTF-8"/>
-		<title>我的DEMO预览</title>
+		<title>我的文章预览</title>
         <script type="text/javascript" src="../vue.js"></script>
         <link rel="stylesheet" type="text/css" href="../style.css"> 
         <link rel="stylesheet" type="text/css" href="../edit_article.css"> 
@@ -16,11 +16,19 @@
             </div>
             <div class="article">
                 <h1>{{Data.title}}</h1>
+                <div class="wide_picture_div"><img :src="Data.pic"></div>
                 <p>
                     <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;">作者</span>
                     {{Data.name}}
                     <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">参与者</span>
                     {{Data.participator}}
+                    <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">评分</span>
+                    {{Data.level}}
+                    <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">点赞数</span>
+                    {{article_thumbs_up_num}}
+                    <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">阅读数</span>
+                    {{Data.read_time}}
+                    <a style="font-size: medium;color: rgb(83, 104, 107);" v-on:click="jump_to_panel">【阅读量统计图表】</a>
                 </p>
                 <div v-for="(p,index) of Data.data" :key="index">
                     <p v-if="p.kind=='p'" style="line-height: 1.9;margin-left: 20px;margin-right: 20px;">{{p.text}}</p>
@@ -36,7 +44,7 @@
                     <iframe v-if="p.kind=='bv'" :src="'//player.bilibili.com/player.html?bvid='+p.text+'&page=1&as_wide=1&high_quality=1&danmaku=0&t=0'" allowfullscreen="allowfullscreen" height="500" width="800px" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
                     <div v-if="p.kind=='bv'">视频原地址：<a :href="'//www.bilibili.com/video/'+p.text">https://www.bilibili.com/video/{{p.text}}</a></div>
                     <div v-if="p.kind=='a'"><a :href="p.text">{{p.text}}</a></div>
-                </div>
+                </div> 
             </div>
         </div>
         <script  type="text/javascript" src="../topMenu.js"></script>

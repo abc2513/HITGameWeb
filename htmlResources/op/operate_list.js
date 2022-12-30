@@ -58,6 +58,10 @@ var app2=new Vue({
             if(s=='upgrade_3')return '任命管理员'
             if(s=='downgrade_2')return '任免管理员'
             if(s=='hand_level_4')return '交接level4'
+            if(s=='change_article_status')return '变更文章状态'
+            if(s=='set_article_level')return '修改文章评分'
+            if(s=='delete_comment')return '隐藏评论'
+            if(s=='set_index_show')return '设置首页展示内容'
             return '未知操作类型'
         }
         ,example(){       

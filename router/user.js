@@ -19,4 +19,6 @@ router.get('/comment_list',user_handler.get_comment_list)
 router.get('/thumbs_up_num',user_handler.get_thumbs_up_num)
 router.get('/read_time_list',user_handler.get_read_time_list)
 router.get('/read_ip_list',user_handler.get_read_ip_list)
+router.get('/index_show',user_handler.get_index_show_list)
+router.get('/article_main_info',user_handler.get_article_main_info)
 module.exports=router

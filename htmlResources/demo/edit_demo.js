@@ -4,6 +4,7 @@ var app2=new Vue({
         title:'新建文章(请修改文章标题)',
         status:0,
         participator:'',
+        pic:'',
         get_Data:[],
         Data:[],
         change_a:0,change_b:0,
@@ -52,7 +53,7 @@ var app2=new Vue({
                 this.tool_log='存在索引值越界'
                 this.style_str=this.style_fail
             }
-        },
+        }, 
         delect_p(){
             if(this.delect_index<0||this.delect_index>=this.Data.length){
                 this.tool_log='存在索引值越界';
@@ -185,7 +186,7 @@ var app2=new Vue({
                 xmlhttp.open("POST","/my/update_article?articleID="+app2.get_Data.articleID,true);
                 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
                 xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
-                xmlhttp.send("kind="+app2.kind+"&title="+app2.title+"&participator="+app2.participator+"&article_status="+app2.status+"&data="+JSON.stringify(app2.Data));
+                xmlhttp.send("kind="+app2.kind+"&title="+app2.title+"&participator="+app2.participator+"&article_status="+app2.status+"&data="+JSON.stringify(app2.Data)+"&pic="+app2.pic);
             }
         },
         get_my_article(){
@@ -216,6 +217,7 @@ var app2=new Vue({
                         app2.title=app2.get_Data.title;
                         app2.status=app2.get_Data.article_status;
                         app2.participator=app2.get_Data.participator;
+                        app2.pic=app2.get_Data.pic;
                     }
                 }
             }

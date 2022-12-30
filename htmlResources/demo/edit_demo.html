@@ -2,7 +2,7 @@
 <html>
     <head>
 		<meta charset="UTF-8"/>
-		<title>编辑DEMO</title>
+		<title>编辑文章</title>
         <script type="text/javascript" src="../vue.js"></script>
         <link rel="stylesheet" type="text/css" href="../style.css"> 
         <link rel="stylesheet" type="text/css" href="../edit_article.css">  
@@ -36,6 +36,14 @@
                     <div class="text_div">
                         <input type="text" v-model="participator">
                     </div>
+                </div>
+                <div class="p_div">
+                    <div class="kind_div">
+                        <span>封面图片链接(建议图片内有内容截图+醒目文字)</span>
+                    </div>
+                    <div class="text_div">
+                        <input type="text" v-model="pic">
+                    </div> 
                 </div>
                 <div class="p_div" v-for="(p,index) of Data" :key="index">
                     <div class="kind_div">

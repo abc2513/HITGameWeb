@@ -1,9 +1,9 @@
 var app2=new Vue({
     el:'.article',
-    data:{
+    data:{ 
         Data:[],
         comment:[],
-        userID:{},
+        userID:'',
         user_level:0,
         new_comment:'',
         article_thumbs_up_num:0,

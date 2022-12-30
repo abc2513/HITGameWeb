@@ -2,7 +2,6 @@ var app2=new Vue({
     el:'.article',
     data:{
         Data:[],
-
     },
     mounted() {
         var url = window.location.href ;             //获取当前url
@@ -12,7 +11,7 @@ var app2=new Vue({
         var cs={};
         for(var i=0;i<cs_arr.length;i++){         //遍历数组，拿到json对象
         cs[cs_arr[i].split('=')[0]] = cs_arr[i].split('=')[1]
-        }
+        } 
         var xmlhttp;
         if (window.XMLHttpRequest)
             xmlhttp=new XMLHttpRequest();

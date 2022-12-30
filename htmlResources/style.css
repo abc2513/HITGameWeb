@@ -7,11 +7,9 @@ body {
     word-break: break-all;
     overflow: auto;
 }
-
 #root {
     width: 100%;
 }
-
 #top_menu {
     position: fixed;
     top: 0;
@@ -19,24 +17,22 @@ body {
     width: 100%;
     z-index: 100;
 }
-
 .top_menu {
     height: 66px;
     background-color: rgb(201, 226, 250);
+    overflow: visible;
 }
-
 .top_menu ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: rgb(218, 236, 255);
+    overflow: visible;
 }
-
 .top_menu ul .left {
     float: left;
 }
-
 .top_menu ul .right {
     float: right;
 }
@@ -53,7 +49,6 @@ body {
     padding-top: 16px;
     border-left: 1px solid rgb(255, 255, 255);
 }
-
 .top_menu li span {
     display: block;
     color: white;
@@ -66,16 +61,13 @@ body {
     font-size: x-large;
     padding-top: 16px;
 }
-
 .top_menu li a:hover {
     background-color: rgb(101, 155, 255);
 }
-
 .top_menu_shadow .top_menu {
     height: 50px;
     width: 100%;
 }
-
 .article {
     z-index: 1;
     position: absolute;
@@ -88,12 +80,10 @@ body {
     background-color: rgba(244, 251, 255, 0.74);
     padding: 8px;
 }
-
 .picture {
     width: 300px;
     float: right;
 }
-
 .long_picture_div {
     width: 240px;
     display: inline-block;
@@ -102,7 +92,6 @@ body {
     margin-right: 0.5%;
     float: right;
 }
-
 .long_picture_div img {
     width: 100%;
 }
@@ -149,3 +138,62 @@ body {
         width: 120px;
     }
 }
+.dropbtn {
+    background-color: rgb(159, 210, 254);
+    color: white;
+    width: 150px;
+    height: 66px;
+    font-size: x-large;
+    border: none;
+    cursor: pointer;
+    padding-top: 0px;
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  /* 容器 <div> - 需要放置下拉内容 */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* 下拉内容（默认隐藏） */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  /* 下拉链接 */
+  .dropdown-content a {
+    display: block;
+    color: rgb(7, 79, 161);
+    background-color: rgb(225, 241, 255);
+    text-align: center;
+    text-decoration: none;
+    width: 150px;
+    height: 40px;
+    padding-top: 10px;
+    font-size: larger;
+    border-left: 1px solid rgb(255, 255, 255);
+    border-right: 0px;
+  }
+  
+  /* 悬停时更改下拉链接的颜色 */
+  .dropdown-content a:hover {
+    background-color: rgb(101, 155, 255);
+    color: white;
+}
+  
+  /* 悬停时显示下拉菜单 */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  /* 显示下拉内容时，更改下拉按钮的背景颜色 */
+  .dropdown:hover .dropbtn {
+    background-color: rgb(101, 155, 255);
+  }

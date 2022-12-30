@@ -446,4 +446,44 @@ exports.get_read_ip_list=(req,res)=>{
        else{
            return res.send({status:0,message:'查询成功',data:results})
        }})
-}
+}//获取指定ID的文章指定时间段内每天的阅读ip数
+exports.get_index_show_list=(req,res)=>{
+    var sqlStr=`select 
+        ID,
+        index_show.articleID AS articleID,
+        pic,
+        title
+    from index_show
+    join article on article.articleID=index_show.articleID
+     `
+    db.query(sqlStr,[],(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到文章'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+        }})
+}//获取主页展示图片列表
+exports.get_article_main_info=(req,res)=>{
+    var sqlStr=`select article.articleID,article.title,article.level,users.name,
+                    DATE_FORMAT(article.create_time, '%Y/%m/%d-%H:%i:%s') as create_time,
+                    (SELECT COUNT(value) from thumbs_up where articleID=article.articleID and kind=1 and value=1)as thumbs_up_num,
+                    (SELECT COUNT(time) from read_log where articleID=article.articleID) AS read_time,pic
+     from article join users on users.userID=article.authorID
+     where articleID=?
+     order by article.level DESC ,create_time DESC
+     `
+    db.query(sqlStr,req.query.articleID,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到文章'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+        }})
+}//获取指定ID的公开文章主要信息

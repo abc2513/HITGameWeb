@@ -260,7 +260,8 @@ exports.set_article_level=(req,res)=>{
 exports.get_all_annonucement_list=(req,res)=>{
     if(req.user.level<3)
     return res.send({status:1,message:'该请求需要3级权限'})
-    var sqlStr='select articleID,title,level,article_status from article where kind=0'
+    var sqlStr=`select articleID,title,level,article_status from article where kind=0
+    order by create_time DESC`
     db.query(sqlStr,(err,results)=>{
         if(err){
             return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
@@ -344,6 +345,39 @@ exports.delete_comment=(req,res)=>{
                 if(results.affectedRows!==1)return res.cc('更改评论可视性失败！稍后再试或联系网站管理员')
                 res.cc('更改评论可视性成功！',0)
                 var router="delete_comment";
+                var sql_str=`insert into operate set operaterID=?,router=?,body=?`
+                db.query(sql_str,[req.user.userID,router,JSON.stringify(req.body)],(err,results)=>{
+                    if(err) {
+                        console.log(err.message)
+                    }
+                    else if(results.affectedRows!==1){
+                        console.log('操作数据库失败')
+                    }
+                    else{
+                        //console.log('有人访问系统啦！')
+                    }})
+            })
+        }
+    })
+}//修改指定ID的评论可见性
+exports.set_index_show=(req,res)=>{
+    if(req.user.level<3)
+        return res.send({status:1,message:'该请求需要3级权限'})
+    var sqlStr=`select * from index_show where ID=?`
+    db.query(sqlStr,req.body.ID,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到ID'})
+        }
+        else{
+            const sql=`update index_show set articleID=? where ID=?`
+            db.query(sql,[req.body.articleID,req.body.ID],(err,results)=>{
+                if(err) return res.cc(err+'请联系网站管理员');
+                if(results.affectedRows!==1)return res.cc('更改主页展示内容失败！稍后再试或联系网站管理员')
+                res.cc('更改主页展示内容成功！',0)
+                var router="set_index_show";
                 var sql_str=`insert into operate set operaterID=?,router=?,body=?`
                 db.query(sql_str,[req.user.userID,router,JSON.stringify(req.body)],(err,results)=>{
                     if(err) {

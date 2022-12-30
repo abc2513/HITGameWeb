@@ -37,7 +37,7 @@ var app2=new Vue({
                         }
                         else{
                             alert(response_json.message+'即将跳转到编辑页面');
-                            window.location.href="./edit_article.html?articleID="+response_json.articleID
+                            window.location.href="../demo/edit_demo.html?articleID="+response_json.articleID
                         }
                     }
                 }

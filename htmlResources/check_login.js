@@ -12,7 +12,7 @@ if(localStorage.getItem("token")!=""){
             response_json=JSON.parse(xmlhttp.responseText);
             if(response_json.status){//token验证失败==1
                 console.log(response_json.message);
-                alert("该功能需要登录，您的登录已过期。请进行登录或者注册。即将跳转到登录页面");
+                alert("该功能需要登录，请进行登录或者注册。即将跳转到登录页面");
                 window.location.href="../user/login.html"
             }
             else{

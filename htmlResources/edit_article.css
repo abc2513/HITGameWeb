@@ -2,8 +2,9 @@
     width:90%;
     margin-top: 10px;
     padding: 7px;
-    background-color: rgb(247, 251, 255);
+    background-color: rgba(247, 251, 255, 0.699);
     margin-left: 30px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .kind_div{
@@ -12,7 +13,7 @@
     font-size: larger;
 }
 .s_kind_div{
-    background-color: rgb(197, 224, 255);
+    background-color: rgba(197, 224, 255, 0.813);
     color: rgb(50, 89, 112);
     font-size: larger;
 }
@@ -42,7 +43,7 @@ button{
     font-size: medium;
 }
 .list_div{
-    background-color: rgb(253, 245, 234);
+    background-color: rgba(253, 245, 234, 0.63);
     padding: 5px;
     margin: 2px;
     width: 98%;

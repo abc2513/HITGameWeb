@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1920px"/>
@@ -8,6 +7,7 @@
     <script type="text/javascript" src="../vue.js"></script>
     <link rel="stylesheet" type="text/css" href="../style.css">
     <link rel="stylesheet" type="text/css" href="../edit_article.css">
+    <link rel="stylesheet" type="text/css" href="./index_show.css">
     <link rel="shortcut icon" href="../resource/favicon64.ico">
     <style>
         .my_ul{
@@ -46,7 +46,7 @@
             <top_menu></top_menu>
         </div>
         <div class="article">
-            <div style="margin: 20px;padding: 10px;background-color: rgba(68, 151, 239, 0.809);width: 90%;padding-left: 5%;">
+            <div style="margin: 20px;padding: 10px;background-color: rgba(68, 151, 239, 0.809);width: 90%;padding-left: 5%;margin-bottom: 5px;">
                 <h1 style="text-align: center;color: white;margin-bottom: 25px;font-size: 45px;font-weight: 500;">哈尔滨工业大学-游戏开发社团</h1>
                 <ul class="my_ul">
                     <li>创新</li>
@@ -56,13 +56,28 @@
                     <li>创享</li>
                 </ul>
                 <div style="font-size: x-large;text-align: center;color:white;margin-top: 5px;">
-                    今天已有{{today_visit_ip}}人{{today_visit_time}}次访问了网站首页
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp今天已有{{today_visit_ip}}人{{today_visit_time}}次访问了网站首页
                     <a href="./web_panel.html" style="color: rgba(224, 239, 242, 0.673);font-size: medium;">更多</a>
+                    <span style="font-size: xx-small;color: rgba(224, 239, 242, 0.673);">注：人数基于ip进行统计</span>
                 </div>
                 <div style="font-size: large;font-weight: 100;text-align: center;color:white;margin-top: 5px;width: 91%;">
                     这里是哈尔滨工业大学独立游戏开发社团的网站，你可以在这里查看别人分享的自制游戏、寻找适合自己加入的项目/团队，也可以分享自己的游戏DEMO、发布寻找开发伙伴的文章。欢迎你的到来！衷心希望你能在这里找到你所期望的。
                 </div>
-
+            </div>
+            <div class="shower-root">
+                <div class="shower-con">
+                    <div class="shower">
+                        <a :href="'../demo/demo.html?articleID='+show[show_select].articleID">
+                            <img :src="show[show_select].pic" :title="show[show_select].title">
+                        </a>
+                    </div>
+                    <div class="title_text"></div>
+                </div>
+                <div class="select_con">
+                    <div v-for="(p,index) of show" v-on:click="select(index)" :class="index==show_select?'select-ed':'select'">
+                        <img :src="p.pic">
+                    </div>
+                </div>
             </div>
             <div class="p_div">
                 <div class="s_kind_div">
@@ -74,7 +89,7 @@
                 <div class="text_div">
                     <div v-for="(p,index) of announcement" :key="index" class="list_div">
                         <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
-                        <a :href="'../announcement/article.html?articleID='+p.articleID">{{p.title}}</a>
+                        <a :href="'../demo/demo.html?articleID='+p.articleID">{{p.title}}</a>
                     </div>
                 </div>
             </div>
@@ -129,7 +144,7 @@
                     <div v-for="(p,index) of newest_project" :key="index" class="list_div">
                         <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
                         <span style="float: left;">{{p.name}}</span>
-                        <a :href="'../project/article.html?articleID='+p.articleID">{{p.title}}</a>
+                        <a :href="'../demo/demo.html?articleID='+p.articleID">{{p.title}}</a>
                     </div>
                 </div>
             </div>
@@ -138,10 +153,11 @@
                 <br>本站内原创内容版权属于其原创作者，除作者或版规特别声明外未经许可不得转载；内容或观点只代表作者，不代表社团
                 <br>抵制不良游戏 拒绝盗版游戏 注意自我保护 谨防受骗上当 适度游戏益脑 沉迷游戏伤身 合理安排时间 享受健康生活
                 <br>社团qq群：925746573|
-                <a href="./user_agreement.html" style="color: rgb(48, 59, 72);font-size: small;">用户协议</a>
+                <a href="./用户手册.html" style="color: rgb(48, 59, 72);font-size: small;">用户手册</a>
+                |<a href="./user_agreement.html" style="color: rgb(48, 59, 72);font-size: small;">用户协议</a>
+                |<a href="./about.html" style="color: rgb(48, 59, 72);font-size: small;">关于本站</a>
             </div>
         </div>
-
     </div>
     <script type="text/javascript" src="../topMenu.js"></script>
     <script type="text/javascript" src="../reload_top_menu.js"></script>

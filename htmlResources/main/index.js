@@ -8,17 +8,59 @@ var app2=new Vue({
         announcement:[],
         today_visit_time:0,
         total_visit_time:0,
-        today_visit_ip:0
+        today_visit_ip:0,
+        show:[],
+        show_select:0,
     },
     mounted() {
+        this.get_index_show();
         this.get_n_best_demo();
         this.get_n_newest_demo();
         this.get_n_newest_project();
         this.get_n_announcement();
         this.get_today_visit_time();
         this.get_today_visit_ip();
+        this.change_select();
     },
     methods:{
+        get_index_show(){
+            var xmlhttp;
+            if (window.XMLHttpRequest)
+                xmlhttp=new XMLHttpRequest();
+            else
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            xmlhttp.onreadystatechange=function(){
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    console.log(xmlhttp.responseText);
+                    response_json=JSON.parse(xmlhttp.responseText);
+                    if(response_json.status){
+                        //alert(response_json.message);
+                        console.log(response_json.message)
+                    }
+                    else{
+                        app2.show=JSON.parse(response_json.data);
+                        for(var i=0;i<5;i++){
+                            if(app2.show[i].pic==null||app2.show[i].pic=='')
+                            app2.show[i].pic='https://s2.loli.net/2022/12/30/bKRuWwvqfGCc19E.png'
+                        }
+                    }
+                }
+            }
+            xmlhttp.open("GET","/api/index_show",true);
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            //xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
+            xmlhttp.send();
+        },
+        select(i){
+            this.show_select=i;
+        },
+        change_select(){
+            setTimeout(function () {
+                app2.show_select=(app2.show_select+1)%5;
+                app2.change_select();
+            }, 10000);
+        },
         get_n_best_demo(){
             var xmlhttp;
             if (window.XMLHttpRequest)
@@ -168,6 +210,7 @@ var app2=new Vue({
             xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
             //xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
             xmlhttp.send();
-        }
+        },
+        
     }
 })

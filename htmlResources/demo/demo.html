@@ -2,7 +2,7 @@
 <html>
     <head>
 		<meta charset="UTF-8"/>
-		<title>DEMO页面</title>
+		<title>文章</title>
         <script type="text/javascript" src="../vue.js"></script>
         <link rel="stylesheet" type="text/css" href="../style.css"> 
         <link rel="stylesheet" type="text/css" href="../edit_article.css"> 
@@ -15,7 +15,8 @@
             </div> 
             <div class="article">
                 <h1>{{Data.title}}</h1>
-                <p>
+                <div class="wide_picture_div"><img :src="Data.pic"></div>
+                <p> 
                     <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;">作者</span>
                     {{Data.name}}
                     <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">参与者</span>
@@ -55,9 +56,9 @@
                         <button v-on:click="thumbs_up_change_article"><span v-if="my_thumbs_up">取消</span>点赞</button>
                         <span v-if="user_level>=3" style="margin-left: 10px;">
                             管理员修改评分:<input type="text" v-model="new_article_level" style="width: 50px;">
-                            <button v-on:click="set_article_level">修改</button>
-                            <button v-on:click="op_change_article_status(1)">设置文章为草稿</button>
-                            <button v-on:click="op_change_article_status(0)">设置文章为公开</button>
+                            <button v-on:click="set_article_level" style="color: brown;font-weight: 600;">修改</button>
+                            <button v-on:click="op_change_article_status(1)" style="color: brown;">设置文章为草稿</button>
+                            <button v-on:click="op_change_article_status(0)" style="color: brown;">设置文章为公开</button>
                         </span>
                     </div>
                     <div v-if="comment.length!=0">
@@ -84,6 +85,13 @@
                             发布评论
                         </div>
                         <div style="width: 100%;background-color:rgba(245, 222, 179, 0.734);padding: 5px;">
+                            <span style="color: rgb(165, 0, 0);" v-if="userID==''">
+                                <a href="../user/reg.html" style="color: brown;font-weight: 600">注册</a>
+                                /
+                                <a href="../user/login.html" style="color: brown;font-weight: 600;">登录</a>
+                                后才能发布评论
+                                <br>
+                            </span>
                             <textarea style="width: 98%;height: 100px;resize: none;font-size: medium;" v-model="new_comment"></textarea>
                             <button v-on:click="create_comment">评论</button>
                         </div>
