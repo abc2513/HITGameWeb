@@ -2,9 +2,25 @@ const db=require('../db/index')
 const bcrypt=require('bcryptjs');
 const jwt =require('jsonwebtoken')
 const config=require('../config')
+const multiparty=require('multiparty')//传输文件
+const compressing=require('compressing')//解压缩
+const fs=require('fs')//系统文件模块
 var danger_char=RegExp(
     /[(\')(\")(\<)]+/
 );
+function emptyDir(path) {
+    const files = fs.readdirSync(path);
+    files.forEach(file => {
+        const filePath = `${path}/${file}`;
+        const stats = fs.statSync(filePath);
+        if (stats.isDirectory()) {
+            emptyDir(filePath);
+        } else {
+            fs.unlinkSync(filePath);
+            console.log(`删除${file}文件成功`);
+        }
+    });
+}//删除文件夹内的所有文件
 exports.getUserInfo=(req,res)=>{
     const sql=`select *,DATE_FORMAT(regtime,'%Y/%m/%d-%H:%i:%s') as regtime_f from users where userID=?`
     db.query(sql,req.user.userID,(err,results)=>{
@@ -271,3 +287,103 @@ exports.thumbs_up_check=(req,res)=>{
             return res.send({status:0,message:'查询成功',data:JSON.stringify(results[0])})
         }})
 }//获取自己对当前文章的点赞情况
+exports.upload_webgl=(req,res)=>{
+    //检查该用户一个月内的创建数
+    //try{
+    var sqlStr1='select * from webgl_upload_info where userID=? && upload_time>=?'
+    var cal_time=new Date();
+    cal_time.setDate(cal_time.getDate()-1)
+    db.query(sqlStr1,[req.user.userID,cal_time],(err,results)=>{
+        if(err)return res.cc(err.message+'数据库查询出错!')
+        if(results.length>=50)return res.cc('您当天的上传次数已耗尽！')
+        //接受文件
+        var form=new multiparty.Form()
+        form.uploadDir='webgl'
+        form.parse(req,function(err,fields,files){
+            if(err) return res.cc('上传文件失败'+err)
+            //上传文件成功
+            console.log(files);
+            var file_name=files.file[0].originalFilename.substr(0,files.file[0].originalFilename.length-4)
+            compressing.zip.uncompress(files.file[0].path, 'webgl/'+req.user.userID+'/'+file_name)
+                .then(() => {
+                    console.log('解压缩文件成功');
+                    fs.unlinkSync(files.file[0].path)//删除压缩包
+                })
+                .catch(err => {
+                    console.error('解压缩文件失败！'+err);
+                    fs.unlinkSync(files.file[0].path)//删除压缩包
+                    return res.cc('解压缩文件失败！'+err)
+                });
+            //记录到数据库
+            var sqlStr2='select * from webgl_info where webgl_name=? and userID=?'
+            db.query(sqlStr2,[file_name,req.user.userID],(err,results)=>{
+                if(err){
+                    res.send({status:1, message:err.message+'数据库查重出错!'})
+                }
+                else if(results.length!=0){
+                    //旧的WebGL：啥也不干
+                    res.send({status:0,message:'上传成功！',data:req.user.userID+'/'+file_name})
+                }else{
+                    //新的WebGL：新建数据库记录
+                    var sqlStr3='insert into webgl_info set ?'
+                    db.query(sqlStr3,{userID:req.user.userID,webgl_name:file_name},(err,results)=>{
+                        if(err)return res.cc(err.message+'数据库查重出错!')
+                        if(results.affectedRows!=1) return res.cc('数据库插入出错!')
+                        res.send({status:0,message:'上传成功！',data:req.user.userID+'/'+file_name})
+                    })
+                }
+                //最后做上传记录登记，无需新增返回数据
+                var sqlStr4='insert into webgl_upload_info set ?'
+                db.query(sqlStr4,{userID:req.user.userID,webgl_name:file_name},(err,results)=>{
+                    if(err)console.log(err)
+                })
+            })
+        })
+    })
+    //}catch{
+    //    res.cc('服务器出现未知错误！请联系管理员！')
+    //}
+
+    
+}//上传WebGL压缩包(并解压缩)
+exports.get_my_webgl_list=(req,res)=>{
+    var sqlStr='select * from webgl_info where userID=? and status=0'
+    db.query(sqlStr,[req.user.userID],(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:0,message:'查询不到webgl'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+        }
+    })
+}//获取自己的webgl列表
+exports.delete_my_webgl=(req,res)=>{
+    var sqlStr='select * from webgl_info where userID=? and status=0 and webgl_infoID=?'
+    db.query(sqlStr,[req.user.userID,req.body.webgl_infoID],(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'在查询不到指定的webgl'})
+        }
+        else{
+            var file_path='webgl/'+results[0].userID+'/'+results[0].webgl_name
+            var sqlStr2='delete from webgl_info where webgl_infoID=?'
+            db.query(sqlStr2,[req.body.webgl_infoID],(err,results)=>{
+                if(err){
+                    return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+                }
+                if(results.affectedRows==0){
+                    return res.send({status:1,message:'删除失败！'})
+                }
+                else{
+                    try{emptyDir(file_path)}
+                    finally{return res.send({status:0,message:'删除成功'})}
+                }
+            })
+        }
+    })
+}//删除自己的指定webgl

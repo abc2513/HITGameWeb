@@ -37,8 +37,8 @@ exports.regUser=(req,res)=>{
     else if(!user_info.email){
         return res.send({status:1,message:'邮箱不能为空！'})
     }
-    else if(user_info.email.length>=20){
-        return res.send({status:1,message:'邮箱长度超过20! '})
+    else if(user_info.email.length>=45){
+        return res.send({status:1,message:'邮箱长度超过45! '})
     }
     else if(!user_info.email.match(/^\w+@\w+\.\w+$/i)){
         return res.send({status:1,message:'邮箱格式不正确！'})
@@ -487,3 +487,17 @@ exports.get_article_main_info=(req,res)=>{
             return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
         }})
 }//获取指定ID的公开文章主要信息
+exports.get_webgl_list=(req,res)=>{
+    var sqlStr=`select * from webgl_info where status=0
+     `
+    db.query(sqlStr,req.query.kind,(err,results)=>{
+        if(err){
+            return res.send({status:1, message:err.message+'请向网站开发者报告这个错误！'})
+        }
+        if(results.length==0){
+            return res.send({status:1,message:'查询不到webgl'})
+        }
+        else{
+            return res.send({status:0,message:'查询成功',data:JSON.stringify(results)})
+        }})
+}

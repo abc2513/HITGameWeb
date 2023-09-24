@@ -36,7 +36,7 @@
                     <div v-for="(p,index) of Data" :key="index" class="list_div">
                         <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
                         <span style="float: left;">{{p.name}}</span>
-                        <a :href="'./article.html?articleID='+Data[index].articleID">{{Data[index].title}}</a>
+                        <a :href="'./demo.html?articleID='+Data[index].articleID">{{Data[index].title}}</a>
                     </div>
                 </div>
             </div>

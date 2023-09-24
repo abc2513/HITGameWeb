@@ -4,7 +4,6 @@
 		<meta charset="UTF-8"/>
 		<title>登录页面</title>
         <script type="text/javascript" src="../vue.js"></script>
-        <script type="text/javascript" src="../axios.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../style.css"> 
         <link rel="stylesheet" type="text/css" href="./reg.css"> 
         <link rel="shortcut icon" href="../resource/favicon64.ico">
@@ -19,6 +18,19 @@
                 <div id="reg">
                     <form>
                         <h1 style="padding-top: 30px">登录账号</h1>
+                        
+                        <label for="name">
+                            <div>
+                                账号/邮箱/用户名:&nbsp<span class='tip'>推荐使用7位账号/邮箱</span><br>
+                                <input type="text" id="name" v-model="src_data">
+                            </div>
+                        </label>
+                        <label for="password">
+                            <div>
+                                密码:&nbsp<span class='tip'>忘记密码请联系管理员重置密码~</span><br>
+                                <input type="password" id="password" v-model="password">
+                            </div>
+                        </label>
                         <div>
                             登录方式：
                             <label for="userID">                           
@@ -39,19 +51,9 @@
                                     <span>用户名<span class='tip'></span></span>
                                 <span>
                             </label>
+                            <span class='tip' style="margin-left: 5px;">会自动选择哦~</span>
+                            <span style="margin-left: 8px;font-size: large;font-weight: 600;color: rgb(6, 69, 179);" onclick="alert('根据第一个输入框的内容自动选择，极少数情况下需要手动修改。判定顺序：是否是记录在本地的用户名、是否满足邮箱格式、是否满足7位纯数字')">?</span>
                         </div>
-                        <label for="name">
-                            <div>
-                                账号/邮箱/用户名:&nbsp<span class='tip'>推荐使用账号/邮箱</span><br>
-                                <input type="text" id="name" v-model="src_data">
-                            </div>
-                        </label>
-                        <label for="password">
-                            <div>
-                                密码:&nbsp<span class='tip'>忘记密码请联系管理员重置密码~</span><br>
-                                <input type="password" id="password" v-model="password">
-                            </div>
-                        </label>
                     </form>
                     <div><button style="margin-left: 40%;font-size: large; padding-left: 8px;padding-right: 8px;" v-on:click="login">登录</button></div>
                     <br><br>

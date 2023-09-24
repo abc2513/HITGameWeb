@@ -4,14 +4,14 @@ const top_menu = Vue.extend({
     <div class="top_menu">
         <ul>
             <div class="dropdown">
-                <button class="dropbtn" onclick="window.location.href='../main/index.html'">主页</button>
+                <button class="dropbtn">主页</button>
                 <div class="dropdown-content" id="top_menu_c1">
                     <a href="../main/index.html">主页</a>
                     <a href="../announcement/guide.html">公告列表</a>
                 </div>
             </div>
             <div class="dropdown">
-                <button class="dropbtn" onclick="window.location.href='../demo/guide.html'">DEMO</button>
+                <button class="dropbtn">DEMO文章</button>
                 <div class="dropdown-content">
                     <a href="../demo/guide.html">DEMO列表</a>
                     <a href="../demo/create_demo.html">新建DEMO</a>
@@ -19,11 +19,19 @@ const top_menu = Vue.extend({
                 </div>
             </div>
             <div class="dropdown">
-                <button class="dropbtn" onclick="window.location.href='../project/guide.html'">项目招人</button>
+                <button class="dropbtn">项目招人</button>
                 <div class="dropdown-content">
                     <a href="../project/guide.html">项目列表</a>
                     <a href="../project/create_article.html">新建项目</a>
                     <a href="../project/my_article_list.html">我的项目</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">在线WebGL</button>
+                <div class="dropdown-content">
+                    <a href="../WebGL/guide.html">WebGL列表</a>
+                    <a href="../WebGL/create_webgl.html">上传WebGL</a>
+                    <a href="../WebGL/my_webgl_list.html">我的WebGL</a>
                 </div>
             </div>
             <div class="dropdown">

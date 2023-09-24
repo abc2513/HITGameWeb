@@ -27,8 +27,9 @@
                     {{article_thumbs_up_num}}
                     <span style="color:rgb(14, 40, 72);font-size: large;font-weight: 600;margin-right: 5px;margin-left: 15px;">阅读数</span>
                     {{Data.read_time}}
-                    <a style="font-size: medium;color: rgb(83, 104, 107);" v-on:click="jump_to_panel">【阅读量统计图表】</a>
-                </p>
+                    <a style="font-size: medium;color: rgb(83, 104, 107);" :href="'../main/article_panel.html?articleID='+Data.articleID">阅读量统计图表</a>
+                    <a style="font-size: medium;color: rgb(83, 104, 107);" :href="'../demo/edit_demo.html?articleID='+Data.articleID" v-if="userID==Data.authorID||(user_level>=3&&Data.kind==0)">编辑本文</a>
+                </p> 
                 <div v-for="(p,index) of Data.data" :key="index">
                     <p v-if="p.kind=='p'" style="line-height: 1.9;margin-left: 20px;margin-right: 20px;">{{p.text}}</p>
                     <br v-if="p.kind=='br'">

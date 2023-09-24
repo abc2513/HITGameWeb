@@ -11,7 +11,7 @@ exports.reg_schema={
     }
 }
 name=joi.string().empty([null, ""]).min(2).max(20)
-email=joi.string().empty([null, ""]).email().min(2).max(20)
+email=joi.string().empty([null, ""]).email().min(2).max(45)
 userID=joi.string().empty([null, ""]).min(7).max(8)
 exports.login_schema={
     body:{

@@ -1,3 +1,4 @@
+
 Vue.config.productionTip=false;
 var app2=new Vue({
     el:'#root',
@@ -34,9 +35,23 @@ var app2=new Vue({
                             alert(response_json.message);
                         }
                         else{//login成功！
-                            localStorage.setItem("token", response_json.token);
-                            alert(response_json.message+"即将转跳到首页");
-                            window.location.href="../main/index.html"
+                            try{
+                                if(app2.src_kind=="name"){
+                                    var used_names=JSON.parse(localStorage.getItem("usernames"))
+                                    if(used_names==null)
+                                        used_names=[];
+                                    if(!used_names.includes(app2.src_data)){
+                                        used_names.push(app2.src_data);
+                                        localStorage.setItem("usernames",JSON.stringify(used_names))
+                                    }
+                                }
+                            }
+                            finally{
+                                localStorage.setItem("token", response_json.token);
+                                alert(response_json.message+"即将转跳到首页");
+                                window.location.href="../main/index.html"
+                            }
+                            
                         }
                     }
                 }
@@ -50,5 +65,18 @@ var app2=new Vue({
         }
     },
     watch:{
+        src_data(){
+            var used_names=JSON.parse(localStorage.getItem("usernames"))
+            if(used_names!==null&&used_names.includes(this.src_data)){
+                this.src_kind="name"
+                //console.log("曾经登录的用户名")
+            }
+            else if(this.src_data.match(/^\w+@\w+\.\w+$/i))
+                this.src_kind="email"
+            else if(this.src_data.length==7&&this.src_data.match(/\d{7}/))
+                this.src_kind="userID"
+            else 
+                this.src_kind="name"
+        }
     }
 })

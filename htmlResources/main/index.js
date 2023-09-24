@@ -11,6 +11,7 @@ var app2=new Vue({
         today_visit_ip:0,
         show:[],
         show_select:0,
+        change_select_status:true,
     },
     mounted() {
         this.get_index_show();
@@ -54,12 +55,16 @@ var app2=new Vue({
         },
         select(i){
             this.show_select=i;
+            this.change_select_status=false
         },
         change_select(){
             setTimeout(function () {
-                app2.show_select=(app2.show_select+1)%5;
+                if(app2.change_select_status)
+                    app2.show_select=(app2.show_select+1)%5;
+                else
+                    app2.change_select_status=true
                 app2.change_select();
-            }, 10000);
+            }, 8000);
         },
         get_n_best_demo(){
             var xmlhttp;

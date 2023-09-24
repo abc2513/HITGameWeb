@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8"/>
+		<title>上传WebGL压缩包</title>
+        <script type="text/javascript" src="../vue.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css"> 
+        <link rel="stylesheet" type="text/css" href="../edit_article.css">
+        <link rel="shortcut icon" href="../resource/favicon64.ico">
+    </head>
+    <body>
+        <div id="root">
+            <div id="top_menu">
+                <top_menu></top_menu>
+                <top_menu_shadow></top_menu_shadow>
+            </div>
+            <div class="article">
+                <h1>上传WebGL</h1>
+                <div class="p_div">
+                    <div class="kind_div">
+                        <span>说明</span>
+                    </div>
+                    <div class="text_div">
+                        <span>该网站功能用于将你的Demo分享到网站上供在线试玩，你需要将你的demo提前打包成WebGL，并压缩成zip文件，具体操作请阅读用户手册。若存在同一用户上传的同名WebGL，则会直接覆盖。</span>
+                    </div>
+                </div>
+                <div class="p_div">
+                    <div class="kind_div">
+                        <span>选择WebGL压缩后的zip文件</span>
+                    </div>
+                    <div class="text_div">
+                        <input type="file" id="file">
+                    </div>
+                </div>
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>提交</span>
+                    </div>
+                    <div class="text_div"> 
+                        <button v-on:click="post_WebGL">提交</button>
+                        <span v-if="have_click">
+                            上传进度：<progress id="progressBar" value="0" max="100"></progress>
+                            <span id="percentage"></span>
+                            <span v-show="load_progress==0">准备上传中</span>
+                            <span v-show="load_progress>0&&load_progress<10">开始上传，请耐心等待</span>
+                            <span v-show="load_progress>=10&&load_progress<50">上传中，你可以先去干点别的事情</span>
+                            <span v-show="load_progress>=50&&load_progress<90">已经过半了！坚持就是胜利</span>
+                            <span v-show="load_progress>=90&&load_progress<100">快了快了，就差一点</span>
+                            <span v-show="load_progress==100">上传成功，服务器解压缩和部署中……（该过程不消耗流量）</span>
+                            <br/>
+                            (请耐心等待，进度条不动也不要慌，等一下就行了。请不要离开本页面，直到页面出现弹窗)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script  type="text/javascript" src="./create_webgl.js"></script>
+        <script  type="text/javascript" src="../topMenu.js"></script>
+        <script  type="text/javascript" src="../reload_top_menu.js"></script>
+        <script  type="text/javascript" src="../check_login.js"></script>
+    </body>
+</html>

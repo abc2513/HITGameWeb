@@ -2,6 +2,7 @@
 /db
 /zs
 /letsencrypt
+/webgl
 *.zip
 # Logs
 logs

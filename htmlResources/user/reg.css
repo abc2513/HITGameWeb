@@ -5,7 +5,7 @@
 #reg div{
     margin: 20px;
     padding: 10px;
-    background-color: rgb(198, 225, 246);
+    background-color: rgba(198, 225, 248, 0.793);
     font-size: larger
 }
 input{

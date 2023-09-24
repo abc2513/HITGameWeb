@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8"/>
+		<title>我的webGL</title>
+        <script type="text/javascript" src="../vue.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css"> 
+        <link rel="stylesheet" type="text/css" href="../edit_article.css"> 
+        <link rel="shortcut icon" href="../resource/favicon64.ico">
+    </head>
+    <body>
+        <div id="root">
+            <div id="top_menu">
+                <top_menu></top_menu>
+                <top_menu_shadow></top_menu_shadow>
+            </div>
+            <div class="article">
+                <h1>我的WebGL</h1>
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>上传（包括更新）WebGL</span>
+                    </div>
+                    <div class="text_div">
+                        <a href="./create_webgl.html" class="medium_a">上传WebGL</a>
+                    </div>
+                </div>
+                
+                <div class="p_div">
+                    <div class="s_kind_div">
+                        <span>查看我所有的DEMO</span>
+                    </div>
+                    <div class="text_div">
+                        <div v-for="(p,index) of Data" :key="p.webgl_infoID" class="list_div">
+                            <span style="font-size: small;color: rgb(90, 108, 110);">#{{index+1}}</span>
+                            <a :href="'../webgl/'+p.userID+'/'+p.webgl_name">{{p.webgl_name}}</a>
+                            <button style="float:right;color:brown" v-on:click="delete_webgl(p.webgl_infoID)">删除</button>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        <script  type="text/javascript" src="../topMenu.js"></script>
+        <script  type="text/javascript" src="../reload_top_menu.js"></script>
+        <script  type="text/javascript" src="../check_login.js"></script>
+        <script  type="text/javascript" src="./my_webgl_list.js"></script>
+    </body>
+</html>

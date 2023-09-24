@@ -74,6 +74,7 @@ var app2=new Vue({
                     response_json=JSON.parse(xmlhttp.responseText);
                     if(response_json.status){
                         alert(response_json.message);
+                        app2.get_artcle_main_info(i+1)
                     }
                     else{//成功
                         var temp=JSON.parse(response_json.data);

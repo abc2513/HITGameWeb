@@ -376,9 +376,6 @@ var app2=new Vue({
             xmlhttp.setRequestHeader("Authorization",localStorage.getItem("token"));
             xmlhttp.send("articleID="+cs.articleID+"&status="+status);
         },
-        jump_to_panel(){
-            window.location.href="../main/article_panel.html?articleID="+app2.Data.articleID
-        }
     }
 }
 )

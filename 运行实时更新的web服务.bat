@@ -1,2 +1,0 @@
-nodemon server.js
-PAUSE

@@ -88,7 +88,10 @@
                 </div> 
                 <div class="text_div">
                     <div v-for="(p,index) of announcement" :key="index" class="list_div">
-                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">{{p.create_time}}</span>
+                        <span style="float: right;margin-right: 5px;font-size: medium;color:rgb(90, 91, 91)">
+                            {{p.read_time}}<span style="font-size: small;">阅</span>
+                            {{p.create_time}}
+                        </span>
                         <a :href="'../demo/demo.html?articleID='+p.articleID">{{p.title}}</a>
                     </div>
                 </div>
@@ -137,7 +140,7 @@
                 <div class="s_kind_div">
                     <span>最新项目</span>
                     <span style="float: right;margin-right: 5px;font-size: large;">
-                        <a href="../project/guide.html">更多</a>
+                        <a href="../demo/guide.html">更多</a>
                     </span>
                 </div> 
                 <div class="text_div">
